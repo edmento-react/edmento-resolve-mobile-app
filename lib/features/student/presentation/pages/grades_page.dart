@@ -11,7 +11,7 @@ class StudentGradesPage extends StatelessWidget {
       body: CustomScrollView(
         physics: ClampingScrollPhysics(),
         slivers: [
-          const CustomSliverAppBar(title: 'Grade'),
+          const SliverBarWidget(title: 'Grade'),
           SliverPadding(
             padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 24),
             sliver: SliverToBoxAdapter(

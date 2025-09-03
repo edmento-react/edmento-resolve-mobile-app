@@ -1,5 +1,6 @@
 // new_password_page.dart
 import 'package:edmentoresolve/core/constants/routes.dart';
+import 'package:edmentoresolve/core/widgets/text_widget.dart';
 import 'package:edmentoresolve/features/authentication/domain/usecases/new_password_usecase.dart';
 import 'package:edmentoresolve/features/authentication/presentation/bloc/auth_bloc.dart';
 import 'package:edmentoresolve/features/authentication/presentation/bloc/new_password_cubit.dart';
@@ -43,7 +44,7 @@ class _NewPasswordView extends StatelessWidget {
         }
       },
       child: Scaffold(
-        appBar: AppBar(title: const Text('Set New Password')),
+        appBar: AppBar(title: TextWidget.heading4('Set New Password', context: context)),
         body: BlocConsumer<NewPasswordCubit, NewPasswordState>(
           listener: (context, state) {
             if (state.success) {
@@ -56,7 +57,7 @@ class _NewPasswordView extends StatelessWidget {
                 // Debug removed
               }
               ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(content: Text('Password reset successful!')),
+                SnackBar(content: TextWidget.body('Password reset successful!', context: context)),
               );
               // context.read<AuthBloc>().add(LogoutRequested());
             }
@@ -87,9 +88,10 @@ class _NewPasswordView extends StatelessWidget {
                   ),
                   const SizedBox(height: 24),
                   if (state.errorMessage.isNotEmpty)
-                    Text(
+                    TextWidget.body(
                       state.errorMessage,
-                      style: TextStyle(color: Colors.red),
+                      context: context,
+                      color: Colors.red,
                     ),
                   SizedBox(height: 8),
                   state.isLoading
@@ -97,7 +99,7 @@ class _NewPasswordView extends StatelessWidget {
                       : ElevatedButton(
                           onPressed: () =>
                               context.read<NewPasswordCubit>().submit(),
-                          child: const Text('Set Password'),
+                          child: TextWidget.label('Set Password', context: context),
                         ),
                 ],
               ),

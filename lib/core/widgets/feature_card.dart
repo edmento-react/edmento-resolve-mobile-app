@@ -1,111 +1,149 @@
 import 'package:edmentoresolve/core/constants/color_constant.dart';
-import 'package:edmentoresolve/core/constants/style_constant.dart';
-import 'package:edmentoresolve/core/utils/screen_util.dart';
+import 'package:edmentoresolve/core/widgets/text_widget.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class FeatureCard extends StatelessWidget {
-  final IconData icon;
   final String title;
-  final String subtitle;
-  final Color color;
-  final VoidCallback onTap;
+  final String? subtitle;
+  final IconData icon;
+  final Color? iconColor;
+  final Color? backgroundColor;
+  final VoidCallback? onTap;
+  final bool isEnabled;
+  final Widget? trailing;
 
   const FeatureCard({
     super.key,
-    required this.icon,
     required this.title,
-    required this.subtitle,
-    required this.color,
-    required this.onTap,
+    this.subtitle,
+    required this.icon,
+    this.iconColor,
+    this.backgroundColor,
+    this.onTap,
+    this.isEnabled = true,
+    this.trailing,
   });
 
   @override
   Widget build(BuildContext context) {
-    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final colorScheme = Theme.of(context).colorScheme;
+
     return Card(
-      elevation: ScreenUtil.getResponsiveValue(
-        smallPhone: 1,
-        mobile: 2,
-        tablet: 3,
-        largeTablet: 4,
-      ),
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(ScreenUtil.getRadius(16)),
-      ),
+      margin: EdgeInsets.symmetric(horizontal: 4.w, vertical: 4.h),
+      elevation: 2,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.r)),
       child: InkWell(
-        onTap: onTap,
-        borderRadius: BorderRadius.circular(ScreenUtil.getRadius(16)),
+        onTap: isEnabled ? onTap : null,
+        borderRadius: BorderRadius.circular(12.r),
         child: Container(
+          padding: EdgeInsets.all(16.w),
           decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(ScreenUtil.getRadius(16)),
-            gradient: LinearGradient(
-              begin: Alignment.topLeft,
-              end: Alignment.bottomRight,
-              colors: [
-                color.withValues(alpha: 0.1),
-                color.withValues(alpha: 0.05),
-              ],
-            ),
+            color: backgroundColor ?? colorScheme.surface,
+            borderRadius: BorderRadius.circular(12.r),
           ),
-          child: Padding(
-            padding: ScreenUtil.getAdaptivePadding(
-              smallPhoneHorizontal: 12,
-              smallPhoneVertical: 10,
-              horizontal: 18,
-              vertical: 15,
-              tabletHorizontal: 24,
-              tabletVertical: 20,
-            ),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Container(
-                  padding: EdgeInsets.all(
-                    ScreenUtil.getResponsiveValue(
-                      smallPhone: 8,
-                      mobile: 10,
-                      tablet: 16,
-                      largeTablet: 20,
-                    ),
-                  ),
-                  decoration: BoxDecoration(
-                    color: color.withValues(alpha: 0.1),
-                    borderRadius: BorderRadius.circular(
-                      ScreenUtil.getRadius(12),
-                    ),
-                  ),
-                  child: Icon(
-                    icon,
-                    size: ScreenUtil.getResponsiveValue(
-                      smallPhone: 28,
-                      mobile: 32,
-                      tablet: 36,
-                      largeTablet: 40,
-                    ),
-                    color: color,
-                  ),
+          child: Row(
+            children: [
+              Container(
+                padding: EdgeInsets.all(12.w),
+                decoration: BoxDecoration(
+                  color: (iconColor ?? ColorConstant.blue).withOpacity(0.1),
+                  borderRadius: BorderRadius.circular(8.r),
                 ),
-                SizedBox(height: ScreenUtil.getHeight(12)),
-                Text(
-                  title,
-                  style: StyleConstant.heading3(
-                    context,
-                  ).copyWith(fontWeight: FontWeight.bold),
-                  textAlign: TextAlign.center,
+                child: Icon(
+                  icon,
+                  size: 24.w,
+                  color: iconColor ?? ColorConstant.blue,
                 ),
-                SizedBox(height: ScreenUtil.getHeight(4)),
-                Text(
-                  subtitle,
-                  style: StyleConstant.caption(
-                    context,
-                  ).copyWith(color: ColorConstant.textSecondaryColorLight),
-                  textAlign: TextAlign.center,
+              ),
+              SizedBox(width: 16.w),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    TextWidget.heading4(
+                      title,
+                      context: context,
+                      color: isEnabled ? null : colorScheme.onSurfaceVariant,
+                    ),
+                    if (subtitle != null) ...[
+                      SizedBox(height: 4.h),
+                      TextWidget.caption(
+                        subtitle!,
+                        context: context,
+                        color: colorScheme.onSurfaceVariant,
+                      ),
+                    ],
+                  ],
+                ),
+              ),
+              if (trailing != null) ...[
+                SizedBox(width: 8.w),
+                trailing!,
+              ] else if (onTap != null) ...[
+                SizedBox(width: 8.w),
+                Icon(
+                  Icons.arrow_forward_ios,
+                  size: 16.w,
+                  color: colorScheme.onSurfaceVariant,
                 ),
               ],
-            ),
+            ],
           ),
         ),
       ),
+    );
+  }
+
+  factory FeatureCard.action({
+    required String title,
+    String? subtitle,
+    required IconData icon,
+    required VoidCallback onTap,
+    Color? iconColor,
+    Color? backgroundColor,
+  }) {
+    return FeatureCard(
+      title: title,
+      subtitle: subtitle,
+      icon: icon,
+      iconColor: iconColor,
+      backgroundColor: backgroundColor,
+      onTap: onTap,
+    );
+  }
+
+  factory FeatureCard.info({
+    required String title,
+    String? subtitle,
+    required IconData icon,
+    Color? iconColor,
+    Color? backgroundColor,
+    Widget? trailing,
+  }) {
+    return FeatureCard(
+      title: title,
+      subtitle: subtitle,
+      icon: icon,
+      iconColor: iconColor,
+      backgroundColor: backgroundColor,
+      trailing: trailing,
+    );
+  }
+
+  factory FeatureCard.disabled({
+    required String title,
+    String? subtitle,
+    required IconData icon,
+    Color? backgroundColor,
+  }) {
+    return FeatureCard(
+      title: title,
+      subtitle: subtitle,
+      icon: icon,
+      iconColor: ColorConstant.grey400,
+      backgroundColor: backgroundColor,
+      isEnabled: false,
     );
   }
 }

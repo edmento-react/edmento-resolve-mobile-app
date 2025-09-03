@@ -79,7 +79,7 @@ class _OtpViewState extends State<_OtpView> {
         }
 
         return Scaffold(
-          backgroundColor: ColorConstant.scaffoldBackgroundColorLight,
+          backgroundColor: ColorConstant.scaffoldLight,
           floatingActionButton: FloatingActionButton(
             elevation: 0,
             backgroundColor: ColorConstant.transparent,
@@ -90,7 +90,7 @@ class _OtpViewState extends State<_OtpView> {
               FloatingActionButtonLocation.miniStartTop,
           body: Center(
             child: SingleChildScrollView(
-              // padding: ScreenUtil.getScreenPadding(),
+              // padding: EdgeInsets.symmetric(horizontal: 16.w),
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
@@ -101,12 +101,11 @@ class _OtpViewState extends State<_OtpView> {
                     'We have sent a 6-digit verification code to',
                     context: context,
                   ),
-                  Text(
+                  TextWidget.body(
                     state.email,
-                    style: theme.textTheme.bodyMedium?.copyWith(
-                      color: ColorConstant.primaryColorLight,
-                      fontWeight: FontWeight.bold,
-                    ),
+                    context: context,
+                    color: ColorConstant.primaryLight,
+                    fontWeight: FontWeight.bold,
                   ),
                   const SizedBox(height: 32),
                   Wrap(
@@ -121,7 +120,7 @@ class _OtpViewState extends State<_OtpView> {
                           maxLength: 1,
                           textAlign: TextAlign.center,
                           style: theme.textTheme.headlineMedium?.copyWith(
-                            color: ColorConstant.primaryColorLight,
+                            color: ColorConstant.primaryLight,
                             fontWeight: FontWeight.bold,
                           ),
                           decoration: InputDecoration(
@@ -131,14 +130,15 @@ class _OtpViewState extends State<_OtpView> {
                             border: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(12),
                               borderSide: BorderSide(
-                                color: ColorConstant.primaryColorLight
-                                    .withOpacity(0.2),
+                                color: ColorConstant.primaryLight.withOpacity(
+                                  0.2,
+                                ),
                               ),
                             ),
                             focusedBorder: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(12),
                               borderSide: BorderSide(
-                                color: ColorConstant.primaryColorLight,
+                                color: ColorConstant.primaryLight,
                                 width: 2,
                               ),
                             ),
@@ -152,12 +152,11 @@ class _OtpViewState extends State<_OtpView> {
                   if (state.errorMessage != null)
                     Column(
                       children: [
-                        Text(
+                        TextWidget.body(
                           state.errorMessage!,
-                          style: theme.textTheme.bodyMedium?.copyWith(
-                            color: Colors.red,
-                            fontWeight: FontWeight.w600,
-                          ),
+                          context: context,
+                          color: Colors.red,
+                          fontWeight: FontWeight.w600,
                         ),
                         const SizedBox(height: 12),
                       ],
@@ -181,21 +180,18 @@ class _OtpViewState extends State<_OtpView> {
                       ),
                       const SizedBox(width: 8),
                       state.secondsRemaining > 0
-                          ? Text(
+                          ? TextWidget.body(
                               'Resend in 0:${state.secondsRemaining.toString().padLeft(2, '0')}',
-                              style: theme.textTheme.bodyMedium?.copyWith(
-                                color: ColorConstant.primaryColorLight,
-                              ),
+                              context: context,
+                              color: ColorConstant.primaryLight,
                             )
                           : GestureDetector(
                               onTap: () => context.read<OtpCubit>().resendOtp(),
-                              child: Text(
+                              child: TextWidget.body(
                                 'Resend OTP',
-                                style: theme.textTheme.bodyMedium?.copyWith(
-                                  color: ColorConstant.primaryColorLight,
-                                  fontWeight: FontWeight.bold,
-                                  decoration: TextDecoration.underline,
-                                ),
+                                context: context,
+                                color: ColorConstant.primaryLight,
+                                fontWeight: FontWeight.bold,
                               ),
                             ),
                     ],

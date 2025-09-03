@@ -1,5 +1,5 @@
+import 'package:edmentoresolve/core/constants/padding_constant.dart';
 import 'package:edmentoresolve/core/constants/routes.dart';
-import 'package:edmentoresolve/core/utils/screen_util.dart';
 import 'package:edmentoresolve/core/widgets/app_bar_widget.dart';
 import 'package:edmentoresolve/core/widgets/spacer_widget.dart';
 import 'package:edmentoresolve/core/widgets/text_widget.dart';
@@ -56,13 +56,7 @@ class _TimetablePageViewState extends State<_TimetablePageView> {
       appBar: AppBarWidget(title: 'Time Table'),
       body: SafeArea(
         child: Padding(
-          padding: ScreenUtil.getAdaptivePadding(
-            smallPhoneVertical: 0,
-            horizontal: 24,
-            vertical: 0,
-            tabletHorizontal: 48,
-            tabletVertical: 0,
-          ),
+          padding: PaddingConstant.screenPaddingHorizontal,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [

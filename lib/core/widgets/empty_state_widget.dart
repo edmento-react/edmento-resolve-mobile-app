@@ -1,13 +1,10 @@
-import 'dart:io';
-
 import 'package:edmentoresolve/core/constants/color_constant.dart';
-import 'package:edmentoresolve/core/utils/screen_util.dart';
 import 'package:edmentoresolve/core/widgets/button_widget.dart';
 import 'package:edmentoresolve/core/widgets/icon_widget.dart';
 import 'package:edmentoresolve/core/widgets/spacer_widget.dart';
 import 'package:edmentoresolve/core/widgets/text_widget.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class EmptyStateWidget extends StatelessWidget {
   final String title;
@@ -17,6 +14,7 @@ class EmptyStateWidget extends StatelessWidget {
   final VoidCallback? onActionPressed;
   final Color? iconColor;
   final Color? textColor;
+  final EdgeInsetsGeometry? padding;
 
   const EmptyStateWidget({
     super.key,
@@ -27,53 +25,52 @@ class EmptyStateWidget extends StatelessWidget {
     this.onActionPressed,
     this.iconColor,
     this.textColor,
+    this.padding,
   });
 
   @override
   Widget build(BuildContext context) {
     return Center(
       child: Padding(
-        padding: ScreenUtil.getAdaptivePadding(
-          smallPhoneHorizontal: 24,
-          smallPhoneVertical: 24,
-          horizontal: 32,
-          vertical: 32,
-          tabletHorizontal: 48,
-          tabletVertical: 48,
-        ),
+        padding: padding ?? EdgeInsets.all(32.w),
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisSize: MainAxisSize.min,
           children: [
-            if (icon != null) ...[
-              IconWidget.large(
-                Platform.isIOS ? CupertinoIcons.info : icon!,
+            // Icon
+            if (icon != null)
+              IconWidget.custom(
+                icon!,
+                size: 64.w,
                 color: iconColor ?? ColorConstant.grey400,
               ),
-              SpacerWidget.large(),
-            ],
+
+            SpacerWidget.medium(),
+
+            // Title
             TextWidget.heading3(
               title,
-              color: textColor ?? ColorConstant.textSecondaryColorLight,
-              textAlign: TextAlign.center,
               context: context,
+              textAlign: TextAlign.center,
+              color: textColor,
             ),
+
+            // Subtitle
             if (subtitle != null) ...[
-              SpacerWidget.medium(),
+              SpacerWidget.small(),
               TextWidget.body(
                 subtitle!,
-                color:
-                    textColor?.withOpacity(0.7) ??
-                    ColorConstant.textCaptionColorLight,
-                textAlign: TextAlign.center,
                 context: context,
+                textAlign: TextAlign.center,
+                color: textColor?.withOpacity(0.7) ?? ColorConstant.grey600,
               ),
             ],
+
+            // Action button
             if (actionLabel != null && onActionPressed != null) ...[
-              SpacerWidget.xlarge(),
-              ButtonWidget.secondary(
+              SpacerWidget.large(),
+              ButtonWidget.primary(
                 label: actionLabel!,
                 onPressed: onActionPressed,
-                icon: Icons.add,
                 context: context,
               ),
             ],
@@ -83,119 +80,82 @@ class EmptyStateWidget extends StatelessWidget {
     );
   }
 
-  static Widget withIcon({
-    required String title,
-    required IconData icon,
-    String? subtitle,
+  /// Factory for no data state
+  factory EmptyStateWidget.noData({
+    String title = 'No Data Available',
+    String? subtitle = 'There\'s nothing to show here yet.',
     String? actionLabel,
     VoidCallback? onActionPressed,
-    Color? iconColor,
-    Color? textColor,
   }) {
     return EmptyStateWidget(
       title: title,
       subtitle: subtitle,
-      icon: icon,
+      icon: Icons.inbox_outlined,
       actionLabel: actionLabel,
       onActionPressed: onActionPressed,
-      iconColor: iconColor,
-      textColor: textColor,
     );
   }
 
-  static Widget noData({String? actionLabel, VoidCallback? onActionPressed}) {
+  /// Factory for no internet state
+  factory EmptyStateWidget.noInternet({
+    String title = 'No Internet Connection',
+    String? subtitle = 'Please check your connection and try again.',
+    String actionLabel = 'Retry',
+    VoidCallback? onActionPressed,
+  }) {
     return EmptyStateWidget(
-      title: 'No Data Available',
-      subtitle: 'There are no items to display at the moment.',
-      icon: Platform.isIOS ? CupertinoIcons.cube_box : Icons.inbox_outlined,
+      title: title,
+      subtitle: subtitle,
+      icon: Icons.wifi_off_outlined,
       actionLabel: actionLabel,
       onActionPressed: onActionPressed,
+      iconColor: ColorConstant.orange,
     );
   }
 
-  static Widget noResults({
+  /// Factory for error state
+  factory EmptyStateWidget.error({
+    String title = 'Something went wrong',
+    String? subtitle = 'An error occurred. Please try again.',
+    String actionLabel = 'Retry',
+    VoidCallback? onActionPressed,
+  }) {
+    return EmptyStateWidget(
+      title: title,
+      subtitle: subtitle,
+      icon: Icons.error_outline,
+      actionLabel: actionLabel,
+      onActionPressed: onActionPressed,
+      iconColor: ColorConstant.red,
+    );
+  }
+
+  /// Factory for search no results
+  factory EmptyStateWidget.searchEmpty({
+    String title = 'No Results Found',
+    String? subtitle = 'Try adjusting your search terms.',
     String? actionLabel,
     VoidCallback? onActionPressed,
   }) {
     return EmptyStateWidget(
-      title: 'No Results Found',
-      subtitle: 'Try adjusting your search criteria.',
-      icon: Platform.isIOS ? CupertinoIcons.search : Icons.search_off,
+      title: title,
+      subtitle: subtitle,
+      icon: Icons.search_off_outlined,
       actionLabel: actionLabel,
       onActionPressed: onActionPressed,
     );
   }
 
-  static Widget error({String? actionLabel, VoidCallback? onActionPressed}) {
-    return EmptyStateWidget(
-      title: 'Something Went Wrong',
-      subtitle: 'We encountered an error. Please try again.',
-      icon: Platform.isIOS
-          ? CupertinoIcons.exclamationmark_circle
-          : Icons.error_outline,
-      actionLabel: actionLabel,
-      onActionPressed: onActionPressed,
-    );
-  }
-
-  static Widget loading({
+  /// Factory for loading state with shimmer
+  factory EmptyStateWidget.loading({
     String title = 'Loading...',
     String? subtitle,
-    required BuildContext context,
   }) {
-    return Center(
-      child: Padding(
-        padding: ScreenUtil.getAdaptivePadding(
-          smallPhoneHorizontal: 24,
-          smallPhoneVertical: 24,
-          horizontal: 32,
-          vertical: 32,
-          tabletHorizontal: 48,
-          tabletVertical: 48,
-        ),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            SizedBox(
-              height: ScreenUtil.getResponsiveValue(
-                smallPhone: 40,
-                mobile: 48,
-                tablet: 56,
-                largeTablet: 64,
-              ),
-              width: ScreenUtil.getResponsiveValue(
-                smallPhone: 40,
-                mobile: 48,
-                tablet: 56,
-                largeTablet: 64,
-              ),
-              child: CircularProgressIndicator(
-                strokeWidth: ScreenUtil.getResponsiveValue(
-                  smallPhone: 2,
-                  mobile: 3,
-                  tablet: 4,
-                  largeTablet: 5,
-                ),
-              ),
-            ),
-            SpacerWidget.large(),
-            TextWidget.heading3(
-              title,
-              textAlign: TextAlign.center,
-              context: context,
-            ),
-            if (subtitle != null) ...[
-              SpacerWidget.medium(),
-              TextWidget.body(
-                subtitle,
-                color: ColorConstant.grey600,
-                textAlign: TextAlign.center,
-                context: context,
-              ),
-            ],
-          ],
-        ),
-      ),
+    return EmptyStateWidget(
+      title: title,
+      subtitle: subtitle,
+      icon: Icons.hourglass_empty,
+      iconColor: ColorConstant.blue,
     );
   }
 }

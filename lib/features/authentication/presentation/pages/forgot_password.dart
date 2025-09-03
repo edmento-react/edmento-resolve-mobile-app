@@ -1,6 +1,5 @@
 import 'package:edmentoresolve/core/constants/color_constant.dart';
 import 'package:edmentoresolve/core/constants/routes.dart';
-import 'package:edmentoresolve/core/utils/screen_util.dart';
 import 'package:edmentoresolve/core/widgets/primary_button.dart';
 import 'package:edmentoresolve/core/widgets/reusable_text_field.dart';
 import 'package:edmentoresolve/core/widgets/spacer_widget.dart';
@@ -8,6 +7,7 @@ import 'package:edmentoresolve/core/widgets/text_widget.dart';
 import 'package:edmentoresolve/features/authentication/presentation/bloc/forgot_password_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get_it/get_it.dart';
 import 'package:go_router/go_router.dart';
 
@@ -84,10 +84,7 @@ class __ForgotPasswordViewState extends State<_ForgotPasswordView> {
         ),
         body: Center(
           child: Padding(
-            padding: ScreenUtil.getAdaptivePadding(
-              horizontal: 24,
-              tabletHorizontal: 48,
-            ),
+            padding: EdgeInsets.symmetric(horizontal: 24.w),
             child: BlocConsumer<ForgotPasswordCubit, ForgotPasswordState>(
               listener: (context, state) {
                 // Debug removed
@@ -95,15 +92,23 @@ class __ForgotPasswordViewState extends State<_ForgotPasswordView> {
                   context.go(AppRoutes.otpScreen, extra: state.email);
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(
-                      content: Text('OTP sent! Please check your email.'),
+                      content: TextWidget.body(
+                        'OTP sent! Please check your email.',
+                        context: context,
+                      ),
                     ),
                   );
                   context.read<ForgotPasswordCubit>().clearOtp();
                   // Optionally navigate to OTP screen
                 } else if (state.errorMessage != null) {
-                  ScaffoldMessenger.of(
-                    context,
-                  ).showSnackBar(SnackBar(content: Text(state.errorMessage!)));
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: TextWidget.body(
+                        state.errorMessage!,
+                        context: context,
+                      ),
+                    ),
+                  );
                 }
               },
               builder: (context, state) {
@@ -120,16 +125,13 @@ class __ForgotPasswordViewState extends State<_ForgotPasswordView> {
                     Form(
                       key: formKey,
                       child: ReusableTextField(
-                        isShadow: state.emailHasFocus,
                         controller: emailController,
                         focusNode: emailFocusNode,
-                        isDark: Theme.of(context).brightness == Brightness.dark,
                         onTap: () {
                           context.read<ForgotPasswordCubit>().setEmailFocus(
                             true,
                           );
                         },
-                        isValid: state.isEmailValid,
                         labelText: 'Email',
                         keyboardType: TextInputType.emailAddress,
                         textInputAction: TextInputAction.next,

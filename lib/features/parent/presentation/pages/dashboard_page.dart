@@ -1,9 +1,9 @@
 import 'package:edmentoresolve/core/widgets/dashboard_scaffold.dart';
+import 'package:edmentoresolve/features/common/presentation/pages/profile_page.dart';
 import 'package:edmentoresolve/features/parent/presentation/pages/children_page.dart';
 import 'package:edmentoresolve/features/parent/presentation/pages/grades_page.dart';
 import 'package:edmentoresolve/features/parent/presentation/pages/home_page.dart';
 import 'package:edmentoresolve/features/parent/presentation/pages/schedule_page.dart';
-import 'package:edmentoresolve/features/profile/presentation/pages/profile_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 

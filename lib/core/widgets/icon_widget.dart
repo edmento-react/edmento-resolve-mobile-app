@@ -1,126 +1,91 @@
 import 'package:edmentoresolve/core/constants/color_constant.dart';
-import 'package:edmentoresolve/core/utils/screen_util.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class IconWidget {
   static Widget large(IconData icon, {Color? color, double? size}) {
-    return Icon(
-      // Platform.isIOS ? CupertinoIcons.info :
-      icon,
-      color: color ?? ColorConstant.blue,
-      size:
-          size ??
-          ScreenUtil.getIconSize(
-            smallPhone: 60,
-            mobile: 80,
-            tablet: 100,
-            largeTablet: 120,
-          ),
-    );
+    return Icon(icon, color: color ?? ColorConstant.blue, size: size ?? 32.w);
   }
 
   static Widget medium(IconData icon, {Color? color, double? size}) {
-    return Icon(
-      // Platform.isIOS ? CupertinoIcons.info :
-      icon,
-      color: color ?? ColorConstant.blue,
-      size:
-          size ??
-          ScreenUtil.getIconSize(
-            smallPhone: 24,
-            mobile: 32,
-            tablet: 36,
-            largeTablet: 40,
-          ),
-    );
+    return Icon(icon, color: color ?? ColorConstant.blue, size: size ?? 24.w);
   }
 
   static Widget small(IconData icon, {Color? color, double? size}) {
-    return Icon(
-      // Platform.isIOS ? CupertinoIcons.info :
-      icon,
-      color: color ?? ColorConstant.blue,
-      size:
-          size ??
-          ScreenUtil.getIconSize(
-            smallPhone: 18,
-            mobile: 24,
-            tablet: 28,
-            largeTablet: 32,
-          ),
-    );
+    return Icon(icon, color: color ?? ColorConstant.blue, size: size ?? 16.w);
   }
 
   static Widget tiny(IconData icon, {Color? color, double? size}) {
-    return Icon(
-      // Platform.isIOS ? CupertinoIcons.info :
+    return Icon(icon, color: color ?? ColorConstant.blue, size: size ?? 12.w);
+  }
+
+  static Widget custom(
+    IconData icon, {
+    Color? color,
+    double? size,
+    Color? backgroundColor,
+    EdgeInsetsGeometry? padding,
+    double? borderRadius,
+  }) {
+    final iconWidget = Icon(
       icon,
       color: color ?? ColorConstant.blue,
-      size:
-          size ??
-          ScreenUtil.getIconSize(
-            smallPhone: 12,
-            mobile: 16,
-            tablet: 18,
-            largeTablet: 20,
-          ),
+      size: size ?? 24.w,
+    );
+
+    if (backgroundColor != null) {
+      return Container(
+        padding: padding ?? EdgeInsets.all(8.w),
+        decoration: BoxDecoration(
+          color: backgroundColor,
+          borderRadius: BorderRadius.circular(borderRadius ?? 8.r),
+        ),
+        child: iconWidget,
+      );
+    }
+
+    return iconWidget;
+  }
+
+  static Widget outlined(
+    IconData icon, {
+    Color? color,
+    Color? borderColor,
+    double? size,
+    EdgeInsetsGeometry? padding,
+    double? borderRadius,
+  }) {
+    return Container(
+      padding: padding ?? EdgeInsets.all(8.w),
+      decoration: BoxDecoration(
+        border: Border.all(
+          color: borderColor ?? ColorConstant.blue,
+          width: 1.w,
+        ),
+        borderRadius: BorderRadius.circular(borderRadius ?? 8.r),
+      ),
+      child: Icon(icon, color: color ?? ColorConstant.blue, size: size ?? 20.w),
     );
   }
 
-  static Widget withContainer(
+  static Widget filled(
     IconData icon, {
-    Color? iconColor,
+    Color? color,
     Color? backgroundColor,
-    double? iconSize,
-    double? containerSize,
-    double? borderRadius,
+    double? size,
     EdgeInsetsGeometry? padding,
+    double? borderRadius,
   }) {
     return Container(
-      width:
-          containerSize ??
-          ScreenUtil.getResponsiveValue(
-            smallPhone: 40,
-            mobile: 48,
-            tablet: 56,
-            largeTablet: 64,
-          ),
-      height:
-          containerSize ??
-          ScreenUtil.getResponsiveValue(
-            smallPhone: 40,
-            mobile: 48,
-            tablet: 56,
-            largeTablet: 64,
-          ),
+      padding: padding ?? EdgeInsets.all(8.w),
       decoration: BoxDecoration(
-        color: backgroundColor ?? ColorConstant.blue.withOpacity(0.1),
-        borderRadius: BorderRadius.circular(
-          borderRadius ?? ScreenUtil.getRadius(12),
-        ),
+        color: backgroundColor ?? ColorConstant.blue,
+        borderRadius: BorderRadius.circular(borderRadius ?? 8.r),
       ),
-      padding:
-          padding ??
-          EdgeInsets.all(
-            ScreenUtil.getResponsiveValue(
-              smallPhone: 8,
-              mobile: 12,
-              tablet: 16,
-              largeTablet: 20,
-            ),
-          ),
       child: Icon(
-        // Platform.isIOS ? CupertinoIcons.info :
         icon,
-        color: iconColor ?? ColorConstant.blue,
-        size:
-            iconSize ??
-            ScreenUtil.getResponsiveValue(
-              smallPhone: 18,
-              mobile: 24,
-              tablet: 28,
-              largeTablet: 32,
-            ),
+        color: color ?? ColorConstant.white,
+        size: size ?? 20.w,
       ),
     );
   }

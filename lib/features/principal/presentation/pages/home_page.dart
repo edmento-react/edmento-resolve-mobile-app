@@ -1,5 +1,5 @@
 import 'package:edmentoresolve/core/constants/color_constant.dart';
-import 'package:edmentoresolve/core/utils/screen_util.dart';
+import 'package:edmentoresolve/core/constants/padding_constant.dart';
 import 'package:edmentoresolve/core/widgets/content_widget.dart';
 import 'package:edmentoresolve/core/widgets/index.dart';
 import 'package:flutter/material.dart';
@@ -10,7 +10,7 @@ class PrincipalHomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final colorScheme = Theme.of(context).colorScheme;
 
     return Scaffold(
       appBar: AppBarWidget(
@@ -25,12 +25,7 @@ class PrincipalHomePage extends StatelessWidget {
         ],
       ),
       body: SingleChildScrollView(
-        padding: ScreenUtil.getAdaptivePadding(
-          horizontal: 24,
-          vertical: 24,
-          tabletHorizontal: 48,
-          tabletVertical: 48,
-        ),
+        padding: PaddingConstant.screenPadding,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -62,9 +57,7 @@ class PrincipalHomePage extends StatelessWidget {
                             SpacerWidget.tiny(),
                             TextWidget.body(
                               'School overview and management',
-                              color: isDark
-                                  ? ColorConstant.textSecondaryColorDark
-                                  : ColorConstant.textSecondaryColorLight,
+                              color: colorScheme.onSurfaceVariant,
                               context: context,
                             ),
                           ],
@@ -75,9 +68,7 @@ class PrincipalHomePage extends StatelessWidget {
                   SpacerWidget.medium(),
                   TextWidget.caption(
                     'Last updated: ${DateFormat('MMM dd, yyyy HH:mm').format(DateTime.now())}',
-                    color: isDark
-                        ? ColorConstant.textCaptionColorDark
-                        : ColorConstant.textCaptionColorLight,
+                    color: colorScheme.onSurfaceVariant,
                     context: context,
                   ),
                 ],
@@ -88,11 +79,13 @@ class PrincipalHomePage extends StatelessWidget {
             /// School Statistics
             TextWidget.heading3('School Statistics', context: context),
             SpacerWidget.medium(),
-            GridWidget.responsive(
-              crossAxisCount: ScreenUtil.getGridCrossAxisCount(),
-              childAspectRatio: ScreenUtil.getChildRatioValue(),
+            GridView.count(
+              crossAxisCount: 2,
+              childAspectRatio: 0.8,
               shrinkWrap: true,
               physics: const NeverScrollableScrollPhysics(),
+              mainAxisSpacing: PaddingConstant.gridSpacing,
+              crossAxisSpacing: PaddingConstant.gridSpacing,
               children: [
                 cardContent(
                   context: context,
@@ -133,11 +126,13 @@ class PrincipalHomePage extends StatelessWidget {
             /// Quick Actions
             TextWidget.heading3('Quick Actions', context: context),
             SpacerWidget.medium(),
-            GridWidget.responsive(
+            GridView.count(
               shrinkWrap: true,
               physics: const NeverScrollableScrollPhysics(),
-              crossAxisCount: ScreenUtil.getGridCrossAxisCount(),
-              childAspectRatio: ScreenUtil.getChildRatioValue(),
+              crossAxisCount: 2,
+              childAspectRatio: 1.0,
+              mainAxisSpacing: PaddingConstant.gridSpacing,
+              crossAxisSpacing: PaddingConstant.gridSpacing,
               children: [
                 cardContent(
                   context: context,

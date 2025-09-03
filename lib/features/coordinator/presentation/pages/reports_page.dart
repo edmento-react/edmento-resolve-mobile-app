@@ -1,4 +1,3 @@
-import 'package:edmentoresolve/core/constants/color_constant.dart';
 import 'package:edmentoresolve/core/widgets/index.dart';
 import 'package:flutter/material.dart';
 
@@ -7,7 +6,7 @@ class CoordinatorReportsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final colorScheme = Theme.of(context).colorScheme;
 
     return Scaffold(
       appBar: AppBarWidget(title: 'Reports'),
@@ -15,9 +14,7 @@ class CoordinatorReportsPage extends StatelessWidget {
         child: TextWidget.heading3(
           'Academic Reports',
           context: context,
-          color: isDark
-              ? ColorConstant.textSecondaryColorDark
-              : ColorConstant.textSecondaryColorLight,
+          color: colorScheme.onSurfaceVariant,
         ),
       ),
     );

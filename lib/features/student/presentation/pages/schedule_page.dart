@@ -256,23 +256,20 @@ class _SchedulePageViewState extends State<_SchedulePageView> {
                           Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text(
+                              TextWidget.heading4(
                                 item['subject'],
-                                style: const TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 16,
-                                ),
+                                context: context,
+                                fontWeight: FontWeight.bold,
                               ),
                               const SizedBox(height: 4),
-                              Text(
+                              TextWidget.body(
                                 item['time'],
-                                style: TextStyle(
-                                  color:
-                                      Theme.of(context).brightness ==
-                                          Brightness.dark
-                                      ? ColorConstant.grey400
-                                      : ColorConstant.grey600,
-                                ),
+                                context: context,
+                                color:
+                                    Theme.of(context).brightness ==
+                                        Brightness.dark
+                                    ? ColorConstant.grey400
+                                    : ColorConstant.grey600,
                               ),
                             ],
                           ),
@@ -311,30 +308,22 @@ class _SchedulePageViewState extends State<_SchedulePageView> {
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      Text(
+                      TextWidget.body(
                         widget.weekdays[index],
-                        style: TextStyle(
-                          fontSize: 16,
-                          color: isSelected
-                              ? (Theme.of(context).brightness == Brightness.dark
-                                    ? ColorConstant.white
-                                    : ColorConstant.black)
-                              : (Theme.of(context).brightness == Brightness.dark
-                                    ? ColorConstant.grey400
-                                    : ColorConstant.grey600),
-                          fontWeight: isSelected
-                              ? FontWeight.bold
-                              : FontWeight.normal,
-                        ),
+                        context: context,
+                        color: isSelected
+                            ? Theme.of(context).colorScheme.onSurface
+                            : Theme.of(context).colorScheme.onSurfaceVariant,
+                        fontWeight: isSelected
+                            ? FontWeight.bold
+                            : FontWeight.normal,
                       ),
                       const SizedBox(height: 4),
                       if (isSelected)
                         Container(
                           height: 2,
                           width: 28,
-                          color: Theme.of(context).brightness == Brightness.dark
-                              ? ColorConstant.white
-                              : ColorConstant.black,
+                          color: Theme.of(context).colorScheme.onSurface,
                         ),
                     ],
                   ),

@@ -1,5 +1,6 @@
 // splash_screen.dart
 import 'package:edmentoresolve/core/constants/routes.dart';
+import 'package:edmentoresolve/core/widgets/text_widget.dart';
 import 'package:edmentoresolve/features/authentication/presentation/bloc/auth_bloc.dart';
 import 'package:edmentoresolve/features/authentication/presentation/bloc/role_cubit.dart';
 import 'package:flutter/material.dart';
@@ -194,11 +195,11 @@ class _SplashPageState extends State<SplashPage> with TickerProviderStateMixin {
                                   //   width: 120,
                                   //   height: 120,
                                   //   decoration: BoxDecoration(
-                                  //     color: ColorConstant.primaryColorLight,
+                                  //     color: ColorConstant.primaryLight,
                                   //     borderRadius: BorderRadius.circular(30),
                                   //     boxShadow: [
                                   //       BoxShadow(
-                                  //         color: ColorConstant.primaryColorLight
+                                  //         color: ColorConstant.primaryLight
                                   //             .withOpacity(0.2),
                                   //         blurRadius: 20,
                                   //         offset: const Offset(0, 10),
@@ -234,7 +235,7 @@ class _SplashPageState extends State<SplashPage> with TickerProviderStateMixin {
                         //               .textTheme
                         //               .headlineMedium
                         //               ?.copyWith(
-                        //                 color: ColorConstant.primaryColorLight,
+                        //                 color: ColorConstant.primaryLight,
                         //                 fontWeight: FontWeight.bold,
                         //                 letterSpacing: 1.2,
                         //               ),
@@ -266,13 +267,10 @@ class _SplashPageState extends State<SplashPage> with TickerProviderStateMixin {
                         //   ),
                         // ),
                         // const SizedBox(height: 20),
-                        Text(
+                        TextWidget.body(
                           'Powered by Edmento',
-                          style: Theme.of(context).textTheme.bodyMedium
-                              ?.copyWith(
-                                color: Colors.black.withOpacity(0.8),
-                                letterSpacing: 0.5,
-                              ),
+                          context: context,
+                          color: Colors.black.withOpacity(0.8),
                         ),
                       ],
                     ),

@@ -1,16 +1,14 @@
 import 'package:edmentoresolve/core/constants/color_constant.dart';
-import 'package:edmentoresolve/core/utils/screen_util.dart';
+import 'package:edmentoresolve/core/constants/padding_constant.dart';
 import 'package:edmentoresolve/core/widgets/app_bar_widget.dart';
 import 'package:edmentoresolve/core/widgets/card_widget.dart';
-import 'package:edmentoresolve/core/widgets/content_widget.dart';
-import 'package:edmentoresolve/core/widgets/grid_widget.dart';
 import 'package:edmentoresolve/core/widgets/icon_widget.dart';
-import 'package:edmentoresolve/core/widgets/list_widget.dart';
 import 'package:edmentoresolve/core/widgets/spacer_widget.dart';
 import 'package:edmentoresolve/core/widgets/text_widget.dart';
 import 'package:edmentoresolve/features/student/presentation/bloc/poster_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
 
 class HomePage extends StatefulWidget {
@@ -136,12 +134,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
           ],
         ),
         body: SingleChildScrollView(
-          padding: ScreenUtil.getAdaptivePadding(
-            horizontal: 24,
-            vertical: 24,
-            tabletHorizontal: 48,
-            tabletVertical: 48,
-          ),
+          padding: PaddingConstant.screenPadding,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -199,7 +192,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                     SpacerWidget.tiny(),
                     TextWidget.body(
                       "Here's what's happening today",
-                      color: ColorConstant.textSecondaryColorLight,
+                      color: ColorConstant.textSecondaryLight,
                       context: context,
                     ),
                   ],
@@ -210,7 +203,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
           SpacerWidget.medium(),
           TextWidget.caption(
             'Last updated: ${DateFormat('MMM dd, yyyy HH:mm').format(DateTime.now())}',
-            color: ColorConstant.textCaptionColorLight,
+            color: ColorConstant.textCaptionLight,
             context: context,
           ),
         ],
@@ -219,11 +212,13 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
   }
 
   Widget _buildAcademicStatsGrid(BuildContext context) {
-    return GridWidget.responsive(
+    return GridView.count(
       physics: const NeverScrollableScrollPhysics(),
       shrinkWrap: true,
-      crossAxisCount: ScreenUtil.getGridCrossAxisCount(),
-      childAspectRatio: ScreenUtil.getChildRatioValue(),
+      crossAxisCount: 2,
+      childAspectRatio: 1.0,
+      mainAxisSpacing: PaddingConstant.gridSpacing,
+      crossAxisSpacing: PaddingConstant.gridSpacing,
       children: [
         cardContent(
           context: context,
@@ -262,9 +257,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
   }
 
   Widget _buildRecentActivityList(BuildContext context) {
-    return ListWidget.simple(
-      physics: const NeverScrollableScrollPhysics(),
-      shrinkWrap: true,
+    return Column(
       children: [
         tileContent(
           context: context,
@@ -303,11 +296,13 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
   }
 
   Widget _buildQuickActionsGrid(BuildContext context) {
-    return GridWidget.responsive(
+    return GridView.count(
       physics: const NeverScrollableScrollPhysics(),
       shrinkWrap: true,
-      crossAxisCount: ScreenUtil.getGridCrossAxisCount(),
-      childAspectRatio: ScreenUtil.getChildRatioValue(),
+      crossAxisCount: 2,
+      childAspectRatio: 1.0,
+      mainAxisSpacing: PaddingConstant.gridSpacing,
+      crossAxisSpacing: PaddingConstant.gridSpacing,
       children: [
         cardContent(
           context: context,
@@ -342,9 +337,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
   }
 
   Widget _buildUpcomingDeadlinesList(BuildContext context) {
-    return ListWidget.simple(
-      physics: const NeverScrollableScrollPhysics(),
-      shrinkWrap: true,
+    return Column(
       children: [
         tileContent(
           context: context,
@@ -373,6 +366,84 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
       ],
     );
   }
+
+  // Helper function for card content (stats and actions)
+  Widget cardContent({
+    required BuildContext context,
+    required IconData icon,
+    required String title,
+    String? value,
+    String? subtitle,
+    required Color color,
+    VoidCallback? onTap,
+  }) {
+    return GestureDetector(
+      onTap: onTap,
+      child: Card(
+        elevation: 2,
+        child: Padding(
+          padding: PaddingConstant.cardPadding,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Icon(icon, color: color, size: 32.w),
+              SpacerWidget.small(),
+              if (value != null) TextWidget.heading3(value, context: context),
+              TextWidget.body(
+                title,
+                context: context,
+                textAlign: TextAlign.center,
+              ),
+              if (subtitle != null)
+                TextWidget.caption(
+                  subtitle,
+                  context: context,
+                  textAlign: TextAlign.center,
+                ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  // Helper function for tile content (activity and deadlines)
+  Widget tileContent({
+    required BuildContext context,
+    IconData? icon,
+    required String title,
+    required String subtitle,
+    String? time,
+    String? deadline,
+    String? priority,
+    required Color color,
+  }) {
+    return Card(
+      margin: PaddingConstant.itemMargin,
+      child: ListTile(
+        leading: icon != null ? Icon(icon, color: color) : null,
+        title: TextWidget.body(title, context: context),
+        subtitle: TextWidget.caption(subtitle, context: context),
+        trailing: time != null
+            ? TextWidget.caption(time, context: context)
+            : deadline != null
+            ? Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: [
+                  TextWidget.caption(deadline, context: context),
+                  if (priority != null)
+                    TextWidget.caption(
+                      priority,
+                      context: context,
+                      color: color,
+                    ),
+                ],
+              )
+            : null,
+      ),
+    );
+  }
 }
 
 class _AnimatedPoster extends StatelessWidget {
@@ -383,21 +454,21 @@ class _AnimatedPoster extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final height = ScreenUtil.screenHeight * 0.75;
+    final height = ScreenUtil().screenHeight * 0.75;
 
     return FadeTransition(
       opacity: animation,
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 12.0),
         child: ClipRRect(
-          borderRadius: BorderRadius.circular(16.0),
+          borderRadius: BorderRadius.circular(10.0),
           child: Material(
             elevation: 12,
             color: Colors.transparent,
             child: Container(
               height: height,
               decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(16.0),
+                borderRadius: BorderRadius.circular(10.0),
                 boxShadow: [
                   BoxShadow(
                     color: Colors.black.withOpacity(0.35),

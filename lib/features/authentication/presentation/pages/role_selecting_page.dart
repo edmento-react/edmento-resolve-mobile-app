@@ -1,7 +1,7 @@
 import 'package:edmentoresolve/core/constants/app_constants.dart';
 import 'package:edmentoresolve/core/constants/color_constant.dart';
 import 'package:edmentoresolve/core/constants/routes.dart';
-import 'package:edmentoresolve/core/utils/screen_util.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:edmentoresolve/core/widgets/index.dart';
 import 'package:edmentoresolve/features/authentication/presentation/bloc/auth_bloc.dart';
 import 'package:edmentoresolve/features/authentication/presentation/bloc/role_cubit.dart';
@@ -52,7 +52,8 @@ class RoleSelectingPage extends StatelessWidget {
                           );
                           context.go(AppRoutes.authWrapper);
                         },
-                        minVerticalPadding: ScreenUtil.screenHeight * 0.04,
+                        minVerticalPadding:
+                            ScreenUtil().screenHeight * 0.04,
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(10),
                         ),
@@ -60,7 +61,7 @@ class RoleSelectingPage extends StatelessWidget {
                         leading: Icon(null),
                         trailing: Icon(
                           data.icon,
-                          size: ScreenUtil.pixelRatio * 20,
+                          size: ScreenUtil().pixelRatio! * 20,
                         ),
                         tileColor: ColorConstant.grey200,
                       ),

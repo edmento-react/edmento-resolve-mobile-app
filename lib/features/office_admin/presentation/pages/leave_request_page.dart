@@ -1,4 +1,5 @@
 import 'package:edmentoresolve/core/widgets/index.dart';
+import 'package:edmentoresolve/core/widgets/text_widget.dart';
 import 'package:flutter/material.dart';
 
 class LeaveRequestPage extends StatelessWidget {
@@ -19,9 +20,10 @@ class LeaveRequestPage extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Text(
+              TextWidget.heading4(
                 'Leave Date',
-                style: TextStyle(fontWeight: FontWeight.bold),
+                context: context,
+                fontWeight: FontWeight.bold,
               ),
               const SizedBox(height: 8),
               Builder(
@@ -46,14 +48,15 @@ class LeaveRequestPage extends StatelessWidget {
                       border: Border.all(color: Colors.grey),
                       borderRadius: BorderRadius.circular(8),
                     ),
-                    child: const Text('Select date'),
+                    child: TextWidget.body('Select date', context: context),
                   ),
                 ),
               ),
               const SizedBox(height: 24),
-              const Text(
+              TextWidget.heading4(
                 'Reason',
-                style: TextStyle(fontWeight: FontWeight.bold),
+                context: context,
+                fontWeight: FontWeight.bold,
               ),
               const SizedBox(height: 8),
               TextFormField(
@@ -75,13 +78,13 @@ class LeaveRequestPage extends StatelessWidget {
                     if (formKey.currentState!.validate()) {
                       // Submit leave request via BLoC
                       ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(
-                          content: Text('Leave request submitted!'),
+                        SnackBar(
+                          content: TextWidget.body('Leave request submitted!', context: context),
                         ),
                       );
                     }
                   },
-                  child: const Text('Submit Request'),
+                  child: TextWidget.label('Submit Request', context: context),
                 ),
               ),
             ],

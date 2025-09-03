@@ -58,7 +58,7 @@ class ImageUtils {
           child: Icon(
             Icons.person,
             size: 50,
-            color: ColorConstant.textSecondaryColorLight,
+            color: ColorConstant.textSecondaryLight,
           ),
         ),
         errorWidget: Container(

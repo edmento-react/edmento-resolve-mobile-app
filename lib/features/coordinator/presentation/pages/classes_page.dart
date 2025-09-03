@@ -47,7 +47,7 @@ class _CoordinatorClassesPageState extends State<CoordinatorClassesPage> {
 
   @override
   Widget build(BuildContext context) {
-    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final colorScheme = Theme.of(context).colorScheme;
 
     return Scaffold(
       appBar: AppBarWidget(

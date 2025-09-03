@@ -1,11 +1,11 @@
 import 'dart:io';
 
 import 'package:edmentoresolve/core/constants/color_constant.dart';
-import 'package:edmentoresolve/core/utils/screen_util.dart';
 import 'package:edmentoresolve/core/widgets/index.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 
 // Settings State
@@ -76,12 +76,7 @@ class SettingsPage extends StatelessWidget {
               ),
             ),
             body: ListView(
-              padding: ScreenUtil.getAdaptivePadding(
-                horizontal: 24,
-                vertical: 24,
-                tabletHorizontal: 48,
-                tabletVertical: 48,
-              ),
+              padding: EdgeInsets.symmetric(horizontal: 24.w, vertical: 24.h),
               children: [
                 SwitchListTile(
                   title: TextWidget.body(
@@ -111,8 +106,10 @@ class SettingsPage extends StatelessWidget {
                     value: state.selectedLanguage,
                     items: ['English', 'Hindi', 'Spanish']
                         .map(
-                          (lang) =>
-                              DropdownMenuItem(value: lang, child: Text(lang)),
+                          (lang) => DropdownMenuItem(
+                            value: lang,
+                            child: TextWidget.body(lang, context: context),
+                          ),
                         )
                         .toList(),
                     onChanged: (value) {
@@ -132,7 +129,7 @@ class SettingsPage extends StatelessWidget {
                         .map(
                           (theme) => DropdownMenuItem(
                             value: theme,
-                            child: Text(theme),
+                            child: TextWidget.body(theme, context: context),
                           ),
                         )
                         .toList(),
@@ -149,10 +146,9 @@ class SettingsPage extends StatelessWidget {
                   label: 'Reset Settings',
                   onPressed: () {
                     context.read<SettingsCubit>().resetSettings();
-                    GlobalSnackBar.show(
-                      context,
+                    GlobalSnackbar.success(
+                      context: context,
                       message: 'Settings reset successfully',
-                      backgroundColor: ColorConstant.green,
                     );
                   },
                   foregroundColor: ColorConstant.orange,

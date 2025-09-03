@@ -1,6 +1,11 @@
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:dio/dio.dart';
 import 'package:edmentoresolve/core/utils/storage_util.dart';
+import 'package:edmentoresolve/features/common/data/repositories/mock_notifications_repository.dart';
+import 'package:edmentoresolve/features/common/domain/repositories/notifications_repository.dart';
+import 'package:edmentoresolve/features/common/presentation/cubit/notifications_cubit.dart';
+import 'package:edmentoresolve/features/teacher/data/repositories/mock_communication_repository.dart';
+import 'package:edmentoresolve/features/teacher/domain/repositories/communication_repository.dart';
 import 'package:get_it/get_it.dart';
 
 import '../../features/authentication/data/datasources/auth_local_data_source.dart';
@@ -82,6 +87,21 @@ Future<void> init() async {
   sl.registerFactory<RoleResolverCubit>(
     () => RoleResolverCubit(sl<StorageService>()),
   );
+
+  sl.registerFactory<NotificationsCubit>(
+    () => NotificationsCubit(sl<INotificationsRepository>()),
+  );
+
+  sl.registerLazySingleton<INotificationsRepository>(
+    () => MockNotificationsRepository(),
+  );
+  // sl.registerLazySingleton<INotificationsRepository>(() => NotificationsApiRepository(dioClient));
+
+  if (!sl.isRegistered<ICommunicationRepository>()) {
+    sl.registerLazySingleton<ICommunicationRepository>(
+      () => MockCommunicationRepository(),
+    );
+  }
 
   // ---------------- Future features ----------------
   // Add other feature DI here…

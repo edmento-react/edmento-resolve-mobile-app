@@ -1,4 +1,3 @@
-import 'package:edmentoresolve/core/constants/color_constant.dart';
 import 'package:edmentoresolve/core/widgets/text_widget.dart';
 import 'package:edmentoresolve/features/student/presentation/bloc/student_cubit.dart';
 import 'package:flutter/material.dart';
@@ -30,9 +29,7 @@ class StudentTabs extends StatelessWidget {
                       Container(
                         height: 2,
                         width: 28,
-                        color: Theme.of(context).brightness == Brightness.dark
-                            ? Colors.white
-                            : ColorConstant.black,
+                        color: Theme.of(context).colorScheme.onSurface,
                       ),
                   ],
                 ),

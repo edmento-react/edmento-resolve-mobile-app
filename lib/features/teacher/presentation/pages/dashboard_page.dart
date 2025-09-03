@@ -1,9 +1,9 @@
 import 'package:edmentoresolve/core/widgets/dashboard_scaffold.dart';
-import 'package:edmentoresolve/features/profile/presentation/pages/profile_page.dart';
-import 'package:edmentoresolve/features/teacher/presentation/pages/assignments_page.dart';
-import 'package:edmentoresolve/features/teacher/presentation/pages/classes_page.dart';
-import 'package:edmentoresolve/features/teacher/presentation/pages/grades_page.dart';
-import 'package:edmentoresolve/features/teacher/presentation/pages/home_page.dart';
+import 'package:edmentoresolve/features/teacher/presentation/pages/classroom_page.dart';
+import 'package:edmentoresolve/features/teacher/presentation/pages/communication_page.dart';
+import 'package:edmentoresolve/features/teacher/presentation/pages/home/home_page.dart';
+import 'package:edmentoresolve/features/teacher/presentation/pages/task_page.dart';
+import 'package:edmentoresolve/features/teacher/presentation/pages/timetable_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -28,26 +28,29 @@ class TeacherDashboardPage extends StatelessWidget {
             pages: const [
               TeacherHomePage(),
               TeacherClassesPage(),
-              TeacherAssignmentsPage(),
-              TeacherGradesPage(),
-              ProfilePage(),
+              ClassroomPage(),
+              TeacherTaskPage(),
+              TeacherCommunicationPage(),
             ],
             items: const [
               BottomNavigationBarItem(
-                icon: Icon(Icons.dashboard),
+                icon: Icon(Icons.home),
                 label: 'Dashboard',
               ),
               BottomNavigationBarItem(
-                icon: Icon(Icons.class_),
-                label: 'Classes',
+                icon: Icon(Icons.calendar_month),
+                label: 'Calendar',
               ),
               BottomNavigationBarItem(
-                icon: Icon(Icons.assignment),
+                icon: Icon(Icons.menu_book_rounded),
                 label: 'Assignments',
               ),
-              BottomNavigationBarItem(icon: Icon(Icons.grade), label: 'Grades'),
               BottomNavigationBarItem(
-                icon: Icon(Icons.person),
+                icon: Icon(Icons.task_alt_sharp),
+                label: 'Grades',
+              ),
+              BottomNavigationBarItem(
+                icon: Icon(Icons.chat_bubble_outline_rounded),
                 label: 'Profile',
               ),
             ],

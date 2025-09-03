@@ -1,4 +1,5 @@
 import 'package:edmentoresolve/core/widgets/app_bar_widget.dart';
+import 'package:edmentoresolve/core/widgets/text_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -37,25 +38,21 @@ class OfficeAdminProfilePage extends StatelessWidget {
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text(
+                          TextWidget.heading3(
                             user.name ?? 'Office Admin',
-                            style: const TextStyle(
-                              fontSize: 20,
-                              fontWeight: FontWeight.bold,
-                            ),
+                            context: context,
+                            fontWeight: FontWeight.bold,
                           ),
-                          Text(
-                            user.email,
-                            style: const TextStyle(fontSize: 16),
-                          ),
+                          TextWidget.body(user.email, context: context),
                         ],
                       ),
                     ],
                   ),
                   const SizedBox(height: 32),
-                  const Text(
+                  TextWidget.heading4(
                     'Account Actions',
-                    style: TextStyle(fontWeight: FontWeight.bold),
+                    context: context,
+                    fontWeight: FontWeight.bold,
                   ),
                   const SizedBox(height: 16),
                   SizedBox(
@@ -64,7 +61,7 @@ class OfficeAdminProfilePage extends StatelessWidget {
                       onPressed: () =>
                           context.read<AuthBloc>().add(LogoutRequested()),
                       icon: const Icon(Icons.logout),
-                      label: const Text('Sign Out'),
+                      label: TextWidget.label('Sign Out', context: context),
                       style: ElevatedButton.styleFrom(
                         foregroundColor: Colors.red,
                         backgroundColor: Colors.white,
@@ -77,7 +74,10 @@ class OfficeAdminProfilePage extends StatelessWidget {
             );
           } else if (state is AuthFailure) {
             return Center(
-              child: Text('Failed to load profile: ${state.message}'),
+              child: TextWidget.body(
+                'Failed to load profile: ${state.message}',
+                context: context,
+              ),
             );
           }
           return const Center(child: CircularProgressIndicator());

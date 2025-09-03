@@ -1,7 +1,5 @@
 import 'package:edmentoresolve/core/constants/color_constant.dart';
 import 'package:edmentoresolve/core/constants/routes.dart';
-import 'package:edmentoresolve/core/constants/style_constant.dart';
-import 'package:edmentoresolve/core/utils/screen_util.dart';
 import 'package:edmentoresolve/core/widgets/global_snackbar.dart';
 import 'package:edmentoresolve/core/widgets/primary_button.dart';
 import 'package:edmentoresolve/core/widgets/reusable_text_field.dart';
@@ -10,6 +8,7 @@ import 'package:edmentoresolve/core/widgets/text_widget.dart';
 import 'package:edmentoresolve/features/authentication/presentation/widgets/or_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 
 import '../bloc/auth_bloc.dart';
@@ -123,11 +122,7 @@ class _LoginPageViewState extends State<_LoginPageView> {
         listenWhen: (prev, curr) => curr is AuthFailure || curr is AuthSuccess,
         listener: (context, state) {
           if (state is AuthFailure) {
-            GlobalSnackBar.show(
-              context,
-              message: state.message,
-              backgroundColor: ColorConstant.red,
-            );
+            GlobalSnackbar.error(context: context, message: state.message);
           } else if (state is AuthSuccess) {
             // Keep UX snappy: clear focus and let the gate show the right page.
             context.read<LoginCubit>().clearAllFocus(isLogin: true);
@@ -146,12 +141,7 @@ class _LoginPageViewState extends State<_LoginPageView> {
             behavior: HitTestBehavior.translucent,
             child: Center(
               child: Padding(
-                padding: ScreenUtil.getAdaptivePadding(
-                  horizontal: 24,
-                  vertical: 24,
-                  tabletHorizontal: 48,
-                  tabletVertical: 48,
-                ),
+                padding: EdgeInsets.symmetric(horizontal: 24.w, vertical: 24.h),
                 child: Form(
                   key: formKey,
                   child: SingleChildScrollView(
@@ -182,26 +172,21 @@ class _LoginPageViewState extends State<_LoginPageView> {
                               prev.isEmailValid != curr.isEmailValid,
                           builder: (context, state) {
                             return ReusableTextField(
-                              isShadow: state.emailHasFocus,
                               controller: emailController,
                               focusNode: emailFocusNode,
-                              isDark:
-                                  Theme.of(context).brightness ==
-                                  Brightness.dark,
                               onTap: () {
                                 context.read<LoginCubit>().setEmailFocus(true);
                                 context.read<LoginCubit>().setPasswordFocus(
                                   false,
                                 );
                               },
-                              isValid: state.isEmailValid,
                               labelText: 'Email',
                               keyboardType: TextInputType.emailAddress,
                               textInputAction: TextInputAction.next,
                               onChanged: (value) {
                                 context.read<LoginCubit>().setEmail(value);
                               },
-                              onSubmitted: (value) {
+                              onFieldSubmitted: (value) {
                                 FocusScope.of(
                                   context,
                                 ).requestFocus(passwordFocusNode);
@@ -231,17 +216,12 @@ class _LoginPageViewState extends State<_LoginPageView> {
                               prev.isPasswordValid != curr.isPasswordValid,
                           builder: (context, state) {
                             return ReusableTextField(
-                              isShadow: state.passwordHasFocus,
                               onTap: () {
                                 context.read<LoginCubit>().setEmailFocus(false);
                                 context.read<LoginCubit>().setPasswordFocus(
                                   true,
                                 );
                               },
-                              isDark:
-                                  Theme.of(context).brightness ==
-                                  Brightness.dark,
-                              isValid: state.isPasswordValid,
                               controller: passwordController,
                               focusNode: passwordFocusNode,
                               labelText: 'Password',
@@ -250,26 +230,13 @@ class _LoginPageViewState extends State<_LoginPageView> {
                               onChanged: (value) {
                                 context.read<LoginCubit>().setPassword(value);
                               },
-                              onSubmitted: (value) {
+                              onFieldSubmitted: (value) {
                                 state.isTermsAccepted
                                     ? login()
                                     : context
                                           .read<LoginCubit>()
                                           .clearAllFocus();
                               },
-                              suffixIcon: IconButton(
-                                icon: Icon(
-                                  state.obscurePassword
-                                      ? Icons.visibility
-                                      : Icons.visibility_off,
-                                  color: ColorConstant.grey800,
-                                ),
-                                onPressed: () {
-                                  context
-                                      .read<LoginCubit>()
-                                      .toggleObscurePassword();
-                                },
-                              ),
                               validator: (value) {
                                 if (value == null || value.isEmpty) {
                                   return null;
@@ -338,8 +305,8 @@ class _LoginPageViewState extends State<_LoginPageView> {
                                 color:
                                     Theme.of(context).brightness ==
                                         Brightness.dark
-                                    ? ColorConstant.dividerColorDark
-                                    : ColorConstant.dividerColorLight,
+                                    ? ColorConstant.dividerDark
+                                    : ColorConstant.dividerLight,
                               ),
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(8),
@@ -354,21 +321,20 @@ class _LoginPageViewState extends State<_LoginPageView> {
                                   color:
                                       Theme.of(context).brightness ==
                                           Brightness.dark
-                                      ? ColorConstant.textPrimaryColorDark
-                                      : ColorConstant.textPrimaryColorLight,
+                                      ? ColorConstant.textPrimaryDark
+                                      : ColorConstant.textPrimaryLight,
                                 ),
                                 SpacerWidget.widthMedium(),
-                                Text(
+                                TextWidget.body(
                                   'Continue with Email',
-                                  style: StyleConstant.body(context).copyWith(
-                                    fontWeight: FontWeight.w500,
-                                    fontSize: 16,
-                                    color:
-                                        Theme.of(context).brightness ==
-                                            Brightness.dark
-                                        ? ColorConstant.textPrimaryColorDark
-                                        : ColorConstant.textPrimaryColorLight,
-                                  ),
+                                  context: context,
+                                  fontWeight: FontWeight.w500,
+                                  fontSize: 16,
+                                  color:
+                                      Theme.of(context).brightness ==
+                                          Brightness.dark
+                                      ? ColorConstant.textPrimaryDark
+                                      : ColorConstant.textPrimaryLight,
                                 ),
                               ],
                             ),
@@ -417,14 +383,10 @@ class _LoginPageViewState extends State<_LoginPageView> {
                         !loginState.isTermsAccepted,
                       );
                     },
-                    child: Text(
+                    child: TextWidget.caption(
                       'By proceeding, I agree to the Privacy Policy and Terms & Conditions.',
-                      style: TextStyle(
-                        color: Theme.of(context).brightness == Brightness.dark
-                            ? ColorConstant.grey400
-                            : ColorConstant.grey800,
-                        fontSize: 12,
-                      ),
+                      context: context,
+                      color: Theme.of(context).colorScheme.onSurfaceVariant,
                     ),
                   ),
                 ),

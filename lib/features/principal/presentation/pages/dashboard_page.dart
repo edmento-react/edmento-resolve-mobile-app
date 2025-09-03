@@ -1,9 +1,9 @@
 import 'package:edmentoresolve/core/constants/routes.dart';
+import 'package:edmentoresolve/features/common/presentation/pages/profile_page.dart';
 import 'package:edmentoresolve/features/principal/presentation/pages/home_page.dart';
 import 'package:edmentoresolve/features/principal/presentation/pages/reports_page.dart';
 import 'package:edmentoresolve/features/principal/presentation/pages/staff_page.dart';
 import 'package:edmentoresolve/features/principal/presentation/pages/students_page.dart';
-import 'package:edmentoresolve/features/profile/presentation/pages/profile_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';

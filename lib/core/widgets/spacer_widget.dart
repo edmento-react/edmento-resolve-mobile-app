@@ -1,63 +1,63 @@
-import 'package:edmentoresolve/core/utils/screen_util.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class SpacerWidget {
-  // Height spacers with small phone support
-static Widget tiny() => SizedBox(
-    height: ScreenUtil.getSpacing(smallPhone: 4, mobile: 4, tablet: 6, largeTablet: 8));
+  // Height spacers
+  static Widget tiny() => SizedBox(height: 4.h);
+  static Widget small() => SizedBox(height: 8.h);
+  static Widget medium() => SizedBox(height: 16.h);
+  static Widget large() => SizedBox(height: 24.h);
+  static Widget xlarge() => SizedBox(height: 32.h);
+  static Widget xxlarge() => SizedBox(height: 48.h);
 
-static Widget small() => SizedBox(
-    height: ScreenUtil.getSpacing(smallPhone: 8, mobile: 8, tablet: 10, largeTablet: 12));
+  // Width spacers
+  static Widget widthTiny() => SizedBox(width: 4.w);
+  static Widget widthSmall() => SizedBox(width: 8.w);
+  static Widget widthMedium() => SizedBox(width: 16.w);
+  static Widget widthLarge() => SizedBox(width: 24.w);
+  static Widget widthXlarge() => SizedBox(width: 32.w);
 
-static Widget medium() => SizedBox(
-    height: ScreenUtil.getSpacing(smallPhone: 12, mobile: 12, tablet: 14, largeTablet: 16));
-
-static Widget large() => SizedBox(
-    height: ScreenUtil.getSpacing(smallPhone: 16, mobile: 16, tablet: 18, largeTablet: 20));
-
-static Widget xlarge() => SizedBox(
-    height: ScreenUtil.getSpacing(smallPhone: 20, mobile: 20, tablet: 24, largeTablet: 28));
-
-static Widget xxlarge() => SizedBox(
-    height: ScreenUtil.getSpacing(smallPhone: 24, mobile: 24, tablet: 30, largeTablet: 36));
-
-
-  // Width spacers with small phone support
-  static Widget widthTiny() => SizedBox(width: ScreenUtil.getSpacing(smallPhone: 2, mobile: 4));
-  static Widget widthSmall() => SizedBox(width: ScreenUtil.getSpacing(smallPhone: 4, mobile: 8));
-  static Widget widthMedium() => SizedBox(width: ScreenUtil.getSpacing(smallPhone: 8, mobile: 16));
-  static Widget widthLarge() => SizedBox(width: ScreenUtil.getSpacing(smallPhone: 12, mobile: 24));
-  static Widget widthXlarge() => SizedBox(width: ScreenUtil.getSpacing(smallPhone: 16, mobile: 32));
-
-  // Adaptive spacers with small phone support
+  // Adaptive spacers
   static Widget adaptive({
     double smallPhone = 12,
     double mobile = 16,
     double tablet = 24,
     double largeTablet = 32,
-  }) => SizedBox(
-    height: ScreenUtil.getResponsiveValue(
-      smallPhone: smallPhone,
-      mobile: mobile,
-      tablet: tablet,
-      largeTablet: largeTablet,
-    ),
-  );
+  }) {
+    final screenWidth = ScreenUtil().screenWidth;
+    double size;
+    if (screenWidth >= 900) {
+      size = largeTablet;
+    } else if (screenWidth >= 600) {
+      size = tablet;
+    } else if (screenWidth <= 411) {
+      size = smallPhone;
+    } else {
+      size = mobile;
+    }
+    return SizedBox(height: size.h);
+  }
 
   static Widget widthAdaptive({
     double smallPhone = 12,
     double mobile = 16,
     double tablet = 24,
     double largeTablet = 32,
-  }) => SizedBox(
-    width: ScreenUtil.getResponsiveValue(
-      smallPhone: smallPhone,
-      mobile: mobile,
-      tablet: tablet,
-      largeTablet: largeTablet,
-    ),
-  );
+  }) {
+    final screenWidth = ScreenUtil().screenWidth;
+    double size;
+    if (screenWidth >= 900) {
+      size = largeTablet;
+    } else if (screenWidth >= 600) {
+      size = tablet;
+    } else if (screenWidth <= 411) {
+      size = smallPhone;
+    } else {
+      size = mobile;
+    }
+    return SizedBox(width: size.w);
+  }
 
-  static Widget custom(double height) => SizedBox(height: height);
-  static Widget widthCustom(double width) => SizedBox(width: width);
-} 
+  static Widget custom(double height) => SizedBox(height: height.h);
+  static Widget widthCustom(double width) => SizedBox(width: width.w);
+}

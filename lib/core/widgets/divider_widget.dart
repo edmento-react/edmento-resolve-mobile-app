@@ -1,134 +1,128 @@
 import 'package:edmentoresolve/core/constants/color_constant.dart';
-import 'package:edmentoresolve/core/constants/style_constant.dart';
-import 'package:edmentoresolve/core/utils/screen_util.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class DividerWidget {
-  static Widget thin({
+  static Widget horizontal({
     Color? color,
     double? thickness,
     double? height,
-    EdgeInsetsGeometry? margin,
+    double? indent,
+    double? endIndent,
   }) {
-    return Container(
-      height: height ?? ScreenUtil.getHeight(1),
-      margin: margin ?? EdgeInsets.symmetric(vertical: ScreenUtil.getHeight(8)),
-      decoration: BoxDecoration(
-        color: color ?? ColorConstant.grey300,
-        borderRadius: BorderRadius.circular(ScreenUtil.getRadius(0.5)),
-      ),
+    return Divider(
+      color: color ?? ColorConstant.grey300,
+      thickness: thickness ?? 1.h,
+      height: height ?? 1.h,
+      indent: indent,
+      endIndent: endIndent,
     );
   }
 
-  static Widget medium({
+  static Widget vertical({
     Color? color,
     double? thickness,
-    double? height,
-    EdgeInsetsGeometry? margin,
+    double? width,
+    double? indent,
+    double? endIndent,
   }) {
-    return Container(
-      height: height ?? ScreenUtil.getHeight(2),
-      margin:
-          margin ?? EdgeInsets.symmetric(vertical: ScreenUtil.getHeight(16)),
-      decoration: BoxDecoration(
-        color: color ?? ColorConstant.grey400,
-        borderRadius: BorderRadius.circular(ScreenUtil.getRadius(1)),
-      ),
+    return VerticalDivider(
+      color: color ?? ColorConstant.grey300,
+      thickness: thickness ?? 1.w,
+      width: width ?? 1.w,
+      indent: indent,
+      endIndent: endIndent,
     );
   }
 
-  static Widget thick({
+  static Widget thick({Color? color, double? thickness, double? height}) {
+    return Container(
+      height: height ?? 8.h,
+      color: color ?? ColorConstant.grey100,
+    );
+  }
+
+  static Widget withText({
+    required String text,
     Color? color,
+    Color? textColor,
     double? thickness,
-    double? height,
-    EdgeInsetsGeometry? margin,
-  }) {
-    return Container(
-      height: height ?? ScreenUtil.getHeight(4),
-      margin:
-          margin ?? EdgeInsets.symmetric(vertical: ScreenUtil.getHeight(24)),
-      decoration: BoxDecoration(
-        color: color ?? ColorConstant.grey500,
-        borderRadius: BorderRadius.circular(ScreenUtil.getRadius(2)),
-      ),
-    );
-  }
-
-  static Widget adaptive({
-    Color? color,
-    double? height,
-    EdgeInsetsGeometry? margin,
-  }) {
-    return Container(
-      height:
-          height ??
-          ScreenUtil.getResponsiveValue(
-            smallPhone: 0.5,
-            mobile: 1,
-            tablet: 2,
-            largeTablet: 3,
-          ),
-      margin:
-          margin ??
-          EdgeInsets.symmetric(
-            vertical: ScreenUtil.getResponsiveValue(
-              smallPhone: 4,
-              mobile: 8,
-              tablet: 16,
-              largeTablet: 24,
-            ),
-          ),
-      decoration: BoxDecoration(
-        color: color ?? ColorConstant.grey300,
-        borderRadius: BorderRadius.circular(ScreenUtil.getRadius(0.5)),
-      ),
-    );
-  }
-
-  static Widget withText(
-    String text, {
-    required BuildContext context,
-    Color? color,
     TextStyle? textStyle,
-    EdgeInsetsGeometry? margin,
   }) {
-    return Container(
-      margin:
-          margin ?? EdgeInsets.symmetric(vertical: ScreenUtil.getHeight(16)),
-      child: Row(
-        children: [
-          Expanded(
-            child: Container(
-              height: ScreenUtil.getHeight(1),
-              decoration: BoxDecoration(
-                color: color ?? ColorConstant.grey300,
-                borderRadius: BorderRadius.circular(ScreenUtil.getRadius(0.5)),
-              ),
-            ),
+    return Row(
+      children: [
+        Expanded(
+          child: Divider(
+            color: color ?? ColorConstant.grey300,
+            thickness: thickness ?? 1.h,
           ),
-          Padding(
-            padding: EdgeInsets.symmetric(horizontal: ScreenUtil.getWidth(16)),
-            child: Text(
-              text,
-              style:
-                  textStyle ??
-                  StyleConstant.caption(context).copyWith(
-                    color: ColorConstant.textSecondaryColorLight,
-                    fontWeight: FontWeight.w500,
-                  ),
-            ),
+        ),
+        Padding(
+          padding: EdgeInsets.symmetric(horizontal: 16.w),
+          child: Text(
+            text,
+            style:
+                textStyle ??
+                TextStyle(
+                  color: textColor ?? ColorConstant.grey600,
+                  fontSize: 14.sp,
+                ),
           ),
-          Expanded(
-            child: Container(
-              height: ScreenUtil.getHeight(1),
-              decoration: BoxDecoration(
-                color: color ?? ColorConstant.grey300,
-                borderRadius: BorderRadius.circular(ScreenUtil.getRadius(0.5)),
-              ),
-            ),
+        ),
+        Expanded(
+          child: Divider(
+            color: color ?? ColorConstant.grey300,
+            thickness: thickness ?? 1.h,
           ),
-        ],
-      ),
+        ),
+      ],
     );
   }
+
+  static Widget dashed({
+    Color? color,
+    double? thickness,
+    double? dashWidth,
+    double? dashSpace,
+  }) {
+    return CustomPaint(
+      painter: _DashedLinePainter(
+        color: color ?? ColorConstant.grey300,
+        thickness: thickness ?? 1.h,
+        dashWidth: dashWidth ?? 4.w,
+        dashSpace: dashSpace ?? 2.w,
+      ),
+      size: Size.fromHeight(thickness ?? 1.h),
+    );
+  }
+}
+
+class _DashedLinePainter extends CustomPainter {
+  final Color color;
+  final double thickness;
+  final double dashWidth;
+  final double dashSpace;
+
+  _DashedLinePainter({
+    required this.color,
+    required this.thickness,
+    required this.dashWidth,
+    required this.dashSpace,
+  });
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    final paint = Paint()
+      ..color = color
+      ..strokeWidth = thickness;
+
+    double startX = 0;
+    while (startX < size.width) {
+      canvas.drawLine(Offset(startX, 0), Offset(startX + dashWidth, 0), paint);
+      startX += dashWidth + dashSpace;
+    }
+  }
+
+  @override
+  bool shouldRepaint(covariant CustomPainter oldDelegate) => false;
 }

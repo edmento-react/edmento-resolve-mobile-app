@@ -1,91 +1,82 @@
 import 'package:edmentoresolve/core/constants/color_constant.dart';
-import 'package:edmentoresolve/core/constants/style_constant.dart';
-import 'package:edmentoresolve/core/utils/screen_util.dart';
+import 'package:edmentoresolve/core/constants/padding_constant.dart';
+import 'package:edmentoresolve/core/widgets/text_widget.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class PrimaryButton extends StatelessWidget {
   final String label;
   final VoidCallback? onPressed;
   final bool loading;
-  final Color backgroundColor;
-  final Color foregroundColor;
+  final Color? backgroundColor;
+  final Color? foregroundColor;
   final EdgeInsetsGeometry? padding;
-  final double borderRadius;
+  final double? borderRadius;
   final TextStyle? textStyle;
+  final IconData? icon;
+  final double? width;
+  final double? height;
 
   const PrimaryButton({
     super.key,
     required this.label,
-    required this.onPressed,
+    this.onPressed,
     this.loading = false,
-    this.backgroundColor = ColorConstant.primaryColorLight,
-    this.foregroundColor = ColorConstant.white,
+    this.backgroundColor,
+    this.foregroundColor,
     this.padding,
-    this.borderRadius = 12,
+    this.borderRadius,
     this.textStyle,
+    this.icon,
+    this.width,
+    this.height,
   });
 
   @override
   Widget build(BuildContext context) {
-    return ElevatedButton(
-      onPressed: loading ? null : onPressed,
-      style: ElevatedButton.styleFrom(
-        backgroundColor: backgroundColor,
-        foregroundColor: foregroundColor,
-        padding:
-            padding ??
-            EdgeInsets.symmetric(
-              vertical: ScreenUtil.getResponsiveValue(
-                smallPhone: 16,
-                mobile: 16,
-                tablet: 18,
-                largeTablet: 20,
-              ),
-              horizontal: ScreenUtil.getResponsiveValue(
-                smallPhone: 20,
-                mobile: 20,
-                tablet: 24,
-                largeTablet: 28,
-              ),
+    return SizedBox(
+      width: width ?? double.infinity,
+      height: height ?? 48.h,
+      child: ElevatedButton(
+        onPressed: loading ? null : onPressed,
+        style: ElevatedButton.styleFrom(
+          backgroundColor: backgroundColor ?? ColorConstant.blue,
+          foregroundColor: foregroundColor ?? ColorConstant.white,
+          padding: padding ?? PaddingConstant.buttonPadding,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(
+              borderRadius ?? PaddingConstant.buttonBorderRadius,
             ),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(borderRadius),
+          ),
+          elevation: 0,
+          shadowColor: ColorConstant.transparent,
         ),
-      ),
-      child: loading
-          ? SizedBox(
-              height: ScreenUtil.getResponsiveValue(
-                smallPhone: 20,
-                mobile: 20,
-                tablet: 24,
-                largeTablet: 28,
-              ),
-              width: ScreenUtil.getResponsiveValue(
-                smallPhone: 20,
-                mobile: 20,
-                tablet: 24,
-                largeTablet: 28,
-              ),
-              child: CircularProgressIndicator(
-                strokeWidth: ScreenUtil.getResponsiveValue(
-                  smallPhone: 1.5,
-                  mobile: 2,
-                  tablet: 2.5,
-                  largeTablet: 3,
-                ),
-                valueColor: AlwaysStoppedAnimation<Color>(foregroundColor),
-              ),
-            )
-          : Text(
-              label,
-              style:
-                  textStyle ??
-                  StyleConstant.label(context).copyWith(
-                    color: foregroundColor,
-                    fontWeight: FontWeight.w600,
-                    fontSize: ScreenUtil.getAdaptiveFontSize(16, 16, 18, 20),
+        child: loading
+            ? SizedBox(
+                height: 20.h,
+                width: 20.w,
+                child: CircularProgressIndicator(
+                  strokeWidth: 2.w,
+                  valueColor: AlwaysStoppedAnimation<Color>(
+                    foregroundColor ?? ColorConstant.white,
                   ),
-            ),
+                ),
+              )
+            : Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  if (icon != null) ...[
+                    Icon(icon, size: 18.w),
+                    SizedBox(width: 8.w),
+                  ],
+                  TextWidget.label(
+                    label,
+                    context: context,
+                    color: foregroundColor ?? ColorConstant.white,
+                  ),
+                ],
+              ),
+      ),
     );
   }
 }

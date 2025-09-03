@@ -53,6 +53,23 @@ class TextWidget {
     );
   }
 
+  static Widget heading4(
+    String text, {
+    Color? color,
+    TextAlign? textAlign,
+    FontWeight? fontWeight,
+    double? fontSize,
+    required BuildContext context,
+  }) {
+    return Text(
+      text,
+      style: StyleConstant.heading4(
+        context,
+      ).copyWith(color: color, fontWeight: fontWeight, fontSize: fontSize),
+      textAlign: textAlign,
+    );
+  }
+
   static Widget body(
     String text, {
     Color? color,

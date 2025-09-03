@@ -1,11 +1,11 @@
 import 'dart:io';
 
 import 'package:edmentoresolve/core/widgets/dashboard_scaffold.dart';
+import 'package:edmentoresolve/features/common/presentation/pages/profile_page.dart';
 import 'package:edmentoresolve/features/coordinator/presentation/pages/assignments_page.dart';
 import 'package:edmentoresolve/features/coordinator/presentation/pages/classes_page.dart';
 import 'package:edmentoresolve/features/coordinator/presentation/pages/home_page.dart';
 import 'package:edmentoresolve/features/coordinator/presentation/pages/reports_page.dart';
-import 'package:edmentoresolve/features/profile/presentation/pages/profile_page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';

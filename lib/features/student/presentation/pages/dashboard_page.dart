@@ -1,5 +1,5 @@
 import 'package:edmentoresolve/core/widgets/dashboard_scaffold.dart';
-import 'package:edmentoresolve/features/profile/presentation/pages/profile_page.dart';
+import 'package:edmentoresolve/features/common/presentation/pages/profile_page.dart';
 import 'package:edmentoresolve/features/student/presentation/bloc/poster_cubit.dart';
 import 'package:edmentoresolve/features/student/presentation/pages/assignments_page.dart';
 import 'package:edmentoresolve/features/student/presentation/pages/grades_page.dart';

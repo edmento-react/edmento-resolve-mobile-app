@@ -1,4 +1,4 @@
-import 'package:edmentoresolve/core/constants/color_constant.dart';
+import 'package:edmentoresolve/core/widgets/text_widget.dart';
 import 'package:flutter/material.dart';
 
 class OrWidget extends StatelessWidget {
@@ -6,36 +6,19 @@ class OrWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final colorScheme = Theme.of(context).colorScheme;
     return Row(
       children: [
-        Expanded(
-          child: Divider(
-            endIndent: 16,
-            color: Theme.of(context).brightness == Brightness.dark
-                ? ColorConstant.dividerColorDark
-                : ColorConstant.dividerColorLight,
-          ),
-        ),
+        Expanded(child: Divider(endIndent: 16, color: colorScheme.outline)),
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 8.0),
-          child: Text(
+          child: TextWidget.caption(
             'OR',
-            style: TextStyle(
-              color: isDark
-                  ? ColorConstant.textSecondaryColorDark
-                  : ColorConstant.textSecondaryColorLight,
-            ),
+            context: context,
+            color: colorScheme.onSurfaceVariant,
           ),
         ),
-        Expanded(
-          child: Divider(
-            indent: 16,
-            color: Theme.of(context).brightness == Brightness.dark
-                ? ColorConstant.dividerColorDark
-                : ColorConstant.dividerColorLight,
-          ),
-        ),
+        Expanded(child: Divider(indent: 16, color: colorScheme.outline)),
       ],
     );
   }

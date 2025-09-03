@@ -5,6 +5,8 @@ import 'package:edmentoresolve/features/authentication/presentation/pages/login_
 import 'package:edmentoresolve/features/authentication/presentation/pages/new_password.dart';
 import 'package:edmentoresolve/features/authentication/presentation/pages/otp_screen.dart';
 import 'package:edmentoresolve/features/authentication/presentation/pages/role_selecting_page.dart';
+import 'package:edmentoresolve/features/common/presentation/pages/notification_page.dart';
+import 'package:edmentoresolve/features/common/presentation/pages/profile_page.dart';
 import 'package:edmentoresolve/features/coordinator/presentation/pages/dashboard_page.dart'
     as coordinator;
 import 'package:edmentoresolve/features/office_admin/presentation/pages/dashboard_page.dart'
@@ -13,7 +15,6 @@ import 'package:edmentoresolve/features/parent/presentation/pages/dashboard_page
     as parent;
 import 'package:edmentoresolve/features/principal/presentation/pages/dashboard_page.dart'
     as principal;
-import 'package:edmentoresolve/features/profile/presentation/pages/profile_page.dart';
 import 'package:edmentoresolve/features/settings/presentation/pages/settings_page.dart';
 import 'package:edmentoresolve/features/splash/presentation/pages/splash_screen.dart';
 import 'package:edmentoresolve/features/student/presentation/pages/dashboard_page.dart'
@@ -21,6 +22,10 @@ import 'package:edmentoresolve/features/student/presentation/pages/dashboard_pag
 import 'package:edmentoresolve/features/student/presentation/pages/schedule_page.dart';
 import 'package:edmentoresolve/features/teacher/presentation/pages/dashboard_page.dart'
     as teacher;
+import 'package:edmentoresolve/features/teacher/presentation/pages/home/announce_now_page.dart';
+import 'package:edmentoresolve/features/teacher/presentation/pages/home/mark_attendance_page.dart';
+import 'package:edmentoresolve/features/teacher/presentation/pages/home/view_report_page.dart';
+import 'package:edmentoresolve/features/teacher/presentation/pages/home/view_students_page.dart';
 import 'package:go_router/go_router.dart';
 
 class AppRoutes {
@@ -40,6 +45,12 @@ class AppRoutes {
   static const String profile = '/profile';
   static const String setting = '/settings';
   static const String schedule = '/schedule';
+
+  //Teacher
+  static const String markAttendance = '/mark-attendance';
+  static const String viewReport = '/view-report';
+  static const String viewStudents = '/view-students';
+  static const String announceNow = '/attendance-now';
 
   // Feature Routes
   static const String notifications = '/notifications';
@@ -171,6 +182,21 @@ class AppRoutes {
           child: const ProfilePage(),
           transitionsBuilder: (context, animation, secondaryAnimation, child) =>
               getTransitionByType(
+                TransitionType.leftToRight,
+                context,
+                animation,
+                secondaryAnimation,
+                child,
+              ),
+        ),
+      ),
+      GoRoute(
+        path: notifications,
+        pageBuilder: (context, state) => CustomTransitionPage(
+          key: state.pageKey,
+          child: const NotificationsPage(),
+          transitionsBuilder: (context, animation, secondaryAnimation, child) =>
+              getTransitionByType(
                 TransitionType.rightToLeft,
                 context,
                 animation,
@@ -261,6 +287,66 @@ class AppRoutes {
         pageBuilder: (context, state) => CustomTransitionPage(
           key: state.pageKey,
           child: const parent.ParentDashboardPage(),
+          transitionsBuilder: (context, animation, secondaryAnimation, child) =>
+              getTransitionByType(
+                TransitionType.rightToLeft,
+                context,
+                animation,
+                secondaryAnimation,
+                child,
+              ),
+        ),
+      ),
+      GoRoute(
+        path: announceNow,
+        pageBuilder: (context, state) => CustomTransitionPage(
+          key: state.pageKey,
+          child: const AnnounceNowPage(),
+          transitionsBuilder: (context, animation, secondaryAnimation, child) =>
+              getTransitionByType(
+                TransitionType.rightToLeft,
+                context,
+                animation,
+                secondaryAnimation,
+                child,
+              ),
+        ),
+      ),
+      GoRoute(
+        path: viewStudents,
+        pageBuilder: (context, state) => CustomTransitionPage(
+          key: state.pageKey,
+          child: const ViewStudentsPage(),
+          transitionsBuilder: (context, animation, secondaryAnimation, child) =>
+              getTransitionByType(
+                TransitionType.rightToLeft,
+                context,
+                animation,
+                secondaryAnimation,
+                child,
+              ),
+        ),
+      ),
+      GoRoute(
+        path: viewReport,
+        pageBuilder: (context, state) => CustomTransitionPage(
+          key: state.pageKey,
+          child: const ViewReportPage(),
+          transitionsBuilder: (context, animation, secondaryAnimation, child) =>
+              getTransitionByType(
+                TransitionType.rightToLeft,
+                context,
+                animation,
+                secondaryAnimation,
+                child,
+              ),
+        ),
+      ),
+      GoRoute(
+        path: markAttendance,
+        pageBuilder: (context, state) => CustomTransitionPage(
+          key: state.pageKey,
+          child: const MarkAttendancePage(),
           transitionsBuilder: (context, animation, secondaryAnimation, child) =>
               getTransitionByType(
                 TransitionType.rightToLeft,

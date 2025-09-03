@@ -1,201 +1,164 @@
 import 'package:edmentoresolve/core/constants/color_constant.dart';
-import 'package:edmentoresolve/core/utils/screen_util.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-class ReusableTextField extends StatelessWidget {
-  final TextEditingController controller;
-  final String labelText;
-  final IconData? prefixIcon;
+class ReusableTextField extends StatefulWidget {
+  final String? labelText;
+  final String? hintText;
+  final String? helperText;
+  final String? errorText;
+  final String? prefixText;
+  final String? suffixText;
+  final Widget? prefixIcon;
   final Widget? suffixIcon;
   final bool obscureText;
-  final TextInputType? keyboardType;
-  final String? Function(String?)? validator;
-  final FocusNode? focusNode;
-  final TextInputAction? textInputAction;
-  final void Function(String)? onSubmitted;
-  final void Function(String)? onChanged;
   final bool enabled;
-  final bool isValid;
-  final String? hintText;
-  final int? maxLines;
-  final int? minLines;
-  final bool isDark;
   final bool readOnly;
-  final bool autoFocus;
-  final bool isShadow;
+  final bool autofocus;
+  final int? maxLines;
+  final int? maxLength;
+  final TextInputType? keyboardType;
+  final TextInputAction? textInputAction;
+  final TextCapitalization textCapitalization;
+  final List<TextInputFormatter>? inputFormatters;
+  final FormFieldValidator<String>? validator;
+  final ValueChanged<String>? onChanged;
   final VoidCallback? onTap;
+  final ValueChanged<String>? onFieldSubmitted;
+  final TextEditingController? controller;
+  final FocusNode? focusNode;
+  final EdgeInsetsGeometry? contentPadding;
+  final TextStyle? style;
+  final TextAlign textAlign;
+  final bool isDense;
 
   const ReusableTextField({
     super.key,
-    required this.controller,
-    required this.labelText,
+    this.labelText,
+    this.hintText,
+    this.helperText,
+    this.errorText,
+    this.prefixText,
+    this.suffixText,
     this.prefixIcon,
     this.suffixIcon,
     this.obscureText = false,
-    this.keyboardType,
-    this.validator,
-    this.focusNode,
-    this.textInputAction,
-    this.onSubmitted,
-    this.onChanged,
     this.enabled = true,
-    this.hintText,
-    this.maxLines = 1,
-    this.minLines,
-    this.isDark = true,
-    this.isValid = true,
-    this.isShadow = false,
     this.readOnly = false,
-    this.autoFocus = false,
+    this.autofocus = false,
+    this.maxLines = 1,
+    this.maxLength,
+    this.keyboardType,
+    this.textInputAction,
+    this.textCapitalization = TextCapitalization.none,
+    this.inputFormatters,
+    this.validator,
+    this.onChanged,
     this.onTap,
+    this.onFieldSubmitted,
+    this.controller,
+    this.focusNode,
+    this.contentPadding,
+    this.style,
+    this.textAlign = TextAlign.start,
+    this.isDense = false,
   });
 
   @override
+  State<ReusableTextField> createState() => _ReusableTextFieldState();
+}
+
+class _ReusableTextFieldState extends State<ReusableTextField> {
+  bool _isObscured = true;
+
+  @override
+  void initState() {
+    super.initState();
+    _isObscured = widget.obscureText;
+  }
+
+  @override
   Widget build(BuildContext context) {
-    final borderRadius = BorderRadius.circular(
-      ScreenUtil.getResponsiveValue(
-        smallPhone: 8,
-        mobile: 12,
-        tablet: 16,
-        largeTablet: 20,
-      ),
-    );
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
 
-    Widget textField = TextFormField(
-      controller: controller,
-      focusNode: focusNode,
-      obscureText: obscureText,
-      keyboardType: keyboardType,
-      validator: validator,
-      autofocus: autoFocus,
-      autovalidateMode: AutovalidateMode.onUserInteraction,
-      textInputAction: textInputAction,
-      onFieldSubmitted: onSubmitted,
-      onChanged: onChanged,
-      onTap: onTap,
-      enabled: enabled,
-      readOnly: readOnly,
-      maxLines: maxLines,
-      minLines: minLines,
-      style: TextStyle(
-        fontSize: ScreenUtil.getResponsiveValue(
-          smallPhone: 14,
-          mobile: 16,
-          tablet: 18,
-          largeTablet: 20,
-        ),
-      ),
-
-      decoration: InputDecoration(
-        labelText: labelText,
-        labelStyle: TextStyle(
-          color: isDark
-              ? ColorConstant.textLabelColorDark
-              : ColorConstant.textLabelColorLight,
-        ),
-        hintText: hintText,
-        prefixIcon: prefixIcon != null
-            ? Icon(
-                prefixIcon,
-                color: ColorConstant.grey500,
-                size: ScreenUtil.getIconSize(
-                  smallPhone: 16,
-                  mobile: 20,
-                  tablet: 24,
-                  largeTablet: 28,
-                ),
-              )
-            : null,
-        suffixIcon: suffixIcon,
-        border: OutlineInputBorder(
-          borderRadius: borderRadius,
-          borderSide: const BorderSide(
-            color: ColorConstant.textSecondaryColorLight,
+    return TextFormField(
+      controller: widget.controller,
+      focusNode: widget.focusNode,
+      enabled: widget.enabled,
+      readOnly: widget.readOnly,
+      autofocus: widget.autofocus,
+      obscureText: _isObscured,
+      maxLines: widget.obscureText ? 1 : widget.maxLines,
+      maxLength: widget.maxLength,
+      keyboardType: widget.keyboardType,
+      textInputAction: widget.textInputAction,
+      textCapitalization: widget.textCapitalization,
+      inputFormatters: widget.inputFormatters,
+      validator: widget.validator,
+      onChanged: widget.onChanged,
+      onTap: widget.onTap,
+      onFieldSubmitted: widget.onFieldSubmitted,
+      textAlign: widget.textAlign,
+      style:
+          widget.style ??
+          TextStyle(
+            fontSize: 16.sp,
+            color: widget.enabled
+                ? colorScheme.onSurface
+                : colorScheme.onSurface.withOpacity(0.6),
           ),
+      decoration: InputDecoration(
+        labelText: widget.labelText,
+        hintText: widget.hintText,
+        helperText: widget.helperText,
+        errorText: widget.errorText,
+        prefixText: widget.prefixText,
+        suffixText: widget.suffixText,
+        prefixIcon: widget.prefixIcon,
+        suffixIcon: widget.obscureText
+            ? IconButton(
+                icon: Icon(
+                  _isObscured ? Icons.visibility : Icons.visibility_off,
+                  size: 20.w,
+                ),
+                onPressed: () => setState(() => _isObscured = !_isObscured),
+              )
+            : widget.suffixIcon,
+        isDense: widget.isDense,
+        contentPadding:
+            widget.contentPadding ??
+            EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
+        filled: true,
+        fillColor: widget.enabled
+            ? colorScheme.surface
+            : colorScheme.surface.withOpacity(0.5),
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(8.r),
+          borderSide: BorderSide(color: colorScheme.outline),
         ),
         enabledBorder: OutlineInputBorder(
-          borderRadius: borderRadius,
-          borderSide: const BorderSide(color: ColorConstant.transparent),
+          borderRadius: BorderRadius.circular(8.r),
+          borderSide: BorderSide(color: colorScheme.outline),
         ),
         focusedBorder: OutlineInputBorder(
-          borderRadius: borderRadius,
-          borderSide: BorderSide(
-            color: ColorConstant.primaryColorLight,
-            width: ScreenUtil.getResponsiveValue(
-              smallPhone: 1.5,
-              mobile: 2,
-              tablet: 2.5,
-              largeTablet: 3,
-            ),
-          ),
+          borderRadius: BorderRadius.circular(8.r),
+          borderSide: BorderSide(color: ColorConstant.blue, width: 2.w),
         ),
         errorBorder: OutlineInputBorder(
-          borderRadius: borderRadius,
-          borderSide: const BorderSide(color: ColorConstant.red),
+          borderRadius: BorderRadius.circular(8.r),
+          borderSide: BorderSide(color: ColorConstant.red, width: 1.5.w),
         ),
         focusedErrorBorder: OutlineInputBorder(
-          borderRadius: borderRadius,
-          borderSide: BorderSide(
-            color: ColorConstant.red,
-            width: ScreenUtil.getResponsiveValue(
-              smallPhone: 1.5,
-              mobile: 2,
-              tablet: 2.5,
-              largeTablet: 3,
-            ),
-          ),
+          borderRadius: BorderRadius.circular(8.r),
+          borderSide: BorderSide(color: ColorConstant.red, width: 2.w),
         ),
         disabledBorder: OutlineInputBorder(
-          borderRadius: borderRadius,
-          borderSide: const BorderSide(color: ColorConstant.grey300),
-        ),
-        filled: true,
-        fillColor: isDark
-            ? ColorConstant.surfaceColorDark
-            : ColorConstant.surfaceColorLight,
-        contentPadding: EdgeInsets.symmetric(
-          horizontal: ScreenUtil.getResponsiveValue(
-            smallPhone: 16,
-            mobile: 16,
-            tablet: 20,
-            largeTablet: 24,
-          ),
-          vertical: ScreenUtil.getResponsiveValue(
-            smallPhone: 16,
-            mobile: 16,
-            tablet: 20,
-            largeTablet: 24,
-          ),
+          borderRadius: BorderRadius.circular(8.r),
+          borderSide: BorderSide(color: colorScheme.outline.withOpacity(0.5)),
         ),
       ),
-    );
-
-    return Stack(
-      children: [
-        Positioned.fill(
-          bottom: isValid ? 0 : 20,
-          child: AnimatedContainer(
-            duration: const Duration(milliseconds: 300),
-            curve: Curves.easeInOut,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(15),
-              boxShadow: isShadow
-                  ? [
-                      BoxShadow(
-                        color: isValid
-                            ? ColorConstant.green.withOpacity(0.15)
-                            : ColorConstant.red.withOpacity(0.15),
-                        blurRadius: 6,
-                        offset: const Offset(0, 1),
-                        spreadRadius: 2,
-                      ),
-                    ]
-                  : [],
-            ),
-          ),
-        ),
-        textField,
-      ],
     );
   }
 }

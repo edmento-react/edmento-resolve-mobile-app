@@ -4,7 +4,7 @@ class ApiConstants {
       'https://edmento-school-management-production.up.railway.app';
   // static const String baseUrl = 'https://login-page-tz35.onrender.com';
   // static const String apiVersion = '/v1';
-  static const String apiVersion = '/api';
+  static const String apiVersion = '/api/v1';
   static const String schoolId =
       '785246956827'; //change this school id for every schools
 

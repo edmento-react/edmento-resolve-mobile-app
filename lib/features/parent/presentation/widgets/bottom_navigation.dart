@@ -1,4 +1,3 @@
-import 'package:edmentoresolve/core/constants/color_constant.dart';
 import 'package:flutter/material.dart';
 
 class ParentBottomNavigation extends StatelessWidget {
@@ -12,17 +11,13 @@ class ParentBottomNavigation extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final colorScheme = Theme.of(context).colorScheme;
     return BottomNavigationBar(
       currentIndex: currentIndex,
       onTap: onTap,
       type: BottomNavigationBarType.fixed,
-      selectedItemColor: isDark
-          ? ColorConstant.primaryColorDark
-          : ColorConstant.primaryColorLight,
-      unselectedItemColor: isDark
-          ? ColorConstant.textSecondaryColorDark
-          : ColorConstant.textSecondaryColorLight,
+      selectedItemColor: colorScheme.primary,
+      unselectedItemColor: colorScheme.onSurfaceVariant,
       items: const [
         BottomNavigationBarItem(
           icon: Icon(Icons.dashboard),

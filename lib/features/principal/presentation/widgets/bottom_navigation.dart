@@ -18,11 +18,11 @@
 //       onTap: onTap,
 //       type: BottomNavigationBarType.fixed,
 //       selectedItemColor: isDark
-//           ? ColorConstant.primaryColorDark
-//           : ColorConstant.primaryColorLight,
+//           ? ColorConstant.primaryDark
+//           : ColorConstant.primaryLight,
 //       unselectedItemColor: isDark
-//           ? ColorConstant.textSecondaryColorDark
-//           : ColorConstant.textSecondaryColorLight,
+//           ? ColorConstant.textSecondaryDark
+//           : ColorConstant.textSecondaryLight,
 //       items: const [
 //         BottomNavigationBarItem(
 //           icon: Icon(Icons.dashboard),

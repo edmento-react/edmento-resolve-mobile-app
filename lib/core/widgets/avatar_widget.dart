@@ -1,8 +1,6 @@
 import 'package:edmentoresolve/core/constants/color_constant.dart';
-import 'package:edmentoresolve/core/constants/style_constant.dart';
-import 'package:edmentoresolve/core/utils/image_utils.dart';
-import 'package:edmentoresolve/core/utils/screen_util.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class AvatarWidget extends StatelessWidget {
   final String? imageUrl;
@@ -10,9 +8,7 @@ class AvatarWidget extends StatelessWidget {
   final double? size;
   final Color? backgroundColor;
   final Color? textColor;
-  final double? fontSize;
-  final Widget? placeholder;
-  final Widget? errorWidget;
+  final IconData? placeholder;
 
   const AvatarWidget({
     super.key,
@@ -21,67 +17,41 @@ class AvatarWidget extends StatelessWidget {
     this.size,
     this.backgroundColor,
     this.textColor,
-    this.fontSize,
     this.placeholder,
-    this.errorWidget,
   });
 
   @override
   Widget build(BuildContext context) {
-    final avatarSize =
-        size ??
-        ScreenUtil.getResponsiveValue(
-          smallPhone: 48,
-          mobile: 60,
-          tablet: 72,
-          largeTablet: 80,
-        );
+    final avatarSize = size ?? 40.w;
 
-    if (imageUrl != null && imageUrl!.isNotEmpty) {
-      return ClipRRect(
-        borderRadius: BorderRadius.circular(avatarSize / 2),
-        child: ImageUtils.buildCachedImage(
-          imageUrl: imageUrl!,
-          width: avatarSize,
-          height: avatarSize,
-          fit: BoxFit.cover,
-          placeholder:
-              placeholder ??
-              Container(
-                width: avatarSize,
-                height: avatarSize,
-                color: ColorConstant.grey300,
-                child: Icon(
-                  Icons.person,
-                  size: avatarSize * 0.4,
-                  color: ColorConstant.textSecondaryColorLight,
-                ),
-              ),
-          errorWidget: errorWidget ?? _buildFallbackAvatar(avatarSize, context),
-        ),
-      );
-    }
-
-    return _buildFallbackAvatar(avatarSize, context);
+    return CircleAvatar(
+      radius: avatarSize / 2,
+      backgroundColor: backgroundColor ?? ColorConstant.blue.withOpacity(0.1),
+      foregroundColor: textColor ?? ColorConstant.blue,
+      backgroundImage: imageUrl != null ? NetworkImage(imageUrl!) : null,
+      child: imageUrl == null
+          ? (name != null
+                ? Text(
+                    _getInitials(name!),
+                    style: TextStyle(
+                      fontSize: (avatarSize * 0.4).sp,
+                      fontWeight: FontWeight.w600,
+                      color: textColor ?? ColorConstant.blue,
+                    ),
+                  )
+                : Icon(
+                    placeholder ?? Icons.person,
+                    size: (avatarSize * 0.6).w,
+                    color: textColor ?? ColorConstant.blue,
+                  ))
+          : null,
+    );
   }
 
-  Widget _buildFallbackAvatar(double size, BuildContext context) {
-    return CircleAvatar(
-      radius: size / 2,
-      backgroundColor: backgroundColor ?? ColorConstant.blueLight,
-      child: name != null && name!.isNotEmpty
-          ? Text(
-              name![0].toUpperCase(),
-              style: StyleConstant.heading2(context).copyWith(
-                fontSize: fontSize,
-                color: textColor ?? ColorConstant.blue,
-              ),
-            )
-          : Icon(
-              Icons.person,
-              size: size * 0.4,
-              color: ColorConstant.textSecondaryColorLight,
-            ),
-    );
+  String _getInitials(String name) {
+    final words = name.trim().split(' ');
+    if (words.isEmpty) return '';
+    if (words.length == 1) return words[0][0].toUpperCase();
+    return '${words[0][0]}${words[1][0]}'.toUpperCase();
   }
 }

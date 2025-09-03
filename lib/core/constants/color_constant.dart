@@ -1,43 +1,81 @@
 import 'package:flutter/material.dart';
 
 class ColorConstant {
-  // === PRIMARY BRAND COLORS ===
-  static const Color primaryColorLight = Color(0xFF059669); // Emerald
-  static const Color primaryColorDark = Color(
-    0xFF34D399,
-  ); // Lighter emerald for dark
-  static const Color secondaryColorLight = Color(0xFF9C27B0); // Purple
-  static const Color secondaryColorDark = Color(0xFFBA68C8); // Light purple
+  // === BRAND / PRIMARY ===
+  // Keep your existing brand hues (names cleaned up)
+  static const Color primaryLight = Color(0xFF4B74DD); // Brand blue
+  static const Color primaryDark = Color(0xFF5C8DFF); // Emerald accent in dark
 
-  // === ERROR COLORS ===
-  static const Color errorColorLight = Color(0xFFF44336);
-  static const Color errorColorDark = Color(0xFFEF5350);
+  static const Gradient appGradient = LinearGradient(
+    begin: Alignment.topLeft,
+    end: Alignment.bottomRight,
+    colors: [Color(0xff9db2dc), Color(0xff0e2d6c)],
+  );
+  static const Gradient appGradient2 = LinearGradient(
+    begin: Alignment.topLeft,
+    end: Alignment.bottomRight,
+    colors: [Color(0xFF22C55E), Color(0xFF3B82F6)],
+  );
 
-  // === BACKGROUND & SURFACE ===
-  static const Color scaffoldBackgroundColorLight = Color(0xFFFFFFFF);
-  static const Color scaffoldBackgroundColorDark = Color(0xFF121212);
+  static const Gradient radialGradient = RadialGradient(
+    colors: [Color(0xff9db2dc), Color(0xff0e2d6c)],
+  );
 
-  static const Color surfaceColorLight = Color(0xFFF5F5F5);
-  static const Color surfaceColorDark = Color(0xFF1E1E1E);
+  static const Color secondaryLight = Color(0xFF9C27B0); // Purple
+  static const Color secondaryDark = Color(0xFFBA68C8);
 
-  // === TEXT COLORS ===
-  static const Color textPrimaryColorLight = Color(0xFF191C20);
-  static const Color textPrimaryColorDark = Color(0xFFEDEDED);
+  // === FEEDBACK ===
+  static const Color errorLight = Color(0xFFF44336);
+  static const Color errorDark = Color(0xFFEF5350);
 
-  static const Color textSecondaryColorLight = Color(0xFF757575);
-  static const Color textSecondaryColorDark = Color(0xFFB0B0B0);
+  static const Color successLight = Color(0xFF10B981); // teal/emerald
+  static const Color successDark = Color(0xFF34D399);
 
-  static const Color textCaptionColorLight = Color(0xFFBDBDBD);
-  static const Color textCaptionColorDark = Color(0xFF757575);
+  static const Color warningLight = Color(0xFFF59E0B);
+  static const Color warningDark = Color(0xFFFBBF24);
 
-  static const Color textLabelColorLight = Color(0xFF616161);
-  static const Color textLabelColorDark = Color(0xFF9E9E9E);
+  static const Color infoLight = Color(0xFF3B82F6);
+  static const Color infoDark = Color(0xFF60A5FA);
+
+  // === BACKGROUND / SURFACE (Neutral, non-role) ===
+  // Scaffold = page background; Surface = containers behind cards (if any)
+  static const Color scaffoldLight = Color(0xFFF9FAFB); // slate-50
+  static const Color scaffoldDark = Color(0xFF0F172A); // slate-900
+
+  static const Color surfaceLight = Color(0xFFF5F5F5); // gray-100
+  static const Color surfaceDark = Color(0xFF111827); // gray-900
+
+  // === CARD (Primary recommendation) ===
+  static const Color cardLight = Color(0xFFFFFFFF); // white
+  static const Color cardDark = Color(0xFF1E293B); // slate-800
+  static const Color cardBorderLight = Color(0xFFE5E7EB); // slate-200
+  static const Color cardBorderDark = Color(0xFF334155); // slate-700
+  static const Color cardAltLight = Color(0xFFFAFAFA); // gray-50
+  static const Color cardAltDark = Color(0xFF0F172A); // slate-900
+
+  // Optional overlays (use for pressed states / elevations)
+  static const Color overlayLight = Color(0x0F000000); // 6% black
+  static const Color overlayDark = Color(0x29FFFFFF); // 16% white
+
+  // === TEXT ===
+  static const Color textPrimaryLight = Color(0xFF111827); // gray-900
+  static const Color textPrimaryDark = Color(0xFFE5E7EB); // gray-200
+  static const Color textSecondaryLight = Color(0xFF6B7280); // gray-500
+  static const Color textSecondaryDark = Color(0xFF9CA3AF); // gray-400
+  static const Color textCaptionLight = Color(0xFF9CA3AF); // gray-400
+  static const Color textCaptionDark = Color(0xFF6B7280); // gray-500
+  static const Color textLabelLight = Color(0xFF4B5563); // gray-600
+  static const Color textLabelDark = Color(0xFF9CA3AF); // gray-400
 
   // === DIVIDER ===
-  static const Color dividerColorLight = Color(0xFFE0E0E0);
-  static const Color dividerColorDark = Color(0xFF333333);
+  static const Color dividerLight = Color(
+    0xFFE5E7EB,
+  ); // slate-200 //use for card border also
+  static const Color dividerDark = Color(
+    0xFF334155,
+  ); // slate-700 //use for card border also
 
-  // === GREYS ===
+  // === GREYS (utility) ===
   static const Color grey50 = Color(0xFFF9FAFB);
   static const Color grey100 = Color(0xFFF5F5F5);
   static const Color grey200 = Color(0xFFEEEEEE);
@@ -49,7 +87,7 @@ class ColorConstant {
   static const Color grey800 = Color(0xFF424242);
   static const Color grey900 = Color(0xFF212121);
 
-  // === COMMON COLORS ===
+  // === COMMONS ===
   static const Color red = Color(0xFFF44336);
   static const Color redLight = Color(0xFFFFCDD2);
   static const Color redDark = Color(0xFFD32F2F);

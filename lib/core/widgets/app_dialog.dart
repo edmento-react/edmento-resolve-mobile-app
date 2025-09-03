@@ -1,12 +1,12 @@
 import 'dart:io';
 
 import 'package:edmentoresolve/core/constants/color_constant.dart';
-import 'package:edmentoresolve/core/utils/screen_util.dart';
 import 'package:edmentoresolve/features/authentication/presentation/bloc/auth_bloc.dart';
 import 'package:edmentoresolve/features/authentication/presentation/bloc/role_cubit.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 
 import 'button_widget.dart';
@@ -28,203 +28,160 @@ class AppDialog {
         builder: (context) => CupertinoAlertDialog(
           title: TextWidget.heading3(title, context: context),
           content: Padding(
-            padding:
-                padding ??
-                EdgeInsets.all(
-                  ScreenUtil.getResponsiveValue(
-                    smallPhone: 16,
-                    mobile: 24,
-                    tablet: 28,
-                    largeTablet: 32,
-                  ),
-                ),
+            padding: padding ?? EdgeInsets.all(16.w),
             child: child,
           ),
         ),
-      );
-    } else {
-      return showDialog<T>(
-        context: context,
         barrierDismissible: barrierDismissible,
-        builder: (context) => Dialog(
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(
-              ScreenUtil.getResponsiveValue(
-                smallPhone: 12,
-                mobile: 16,
-                tablet: 20,
-                largeTablet: 24,
-              ),
-            ),
-          ),
-          child: Padding(
-            padding:
-                padding ??
-                EdgeInsets.all(
-                  ScreenUtil.getResponsiveValue(
-                    smallPhone: 16,
-                    mobile: 24,
-                    tablet: 28,
-                    largeTablet: 32,
-                  ),
-                ),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                TextWidget.heading3(title, context: context),
-                SizedBox(
-                  height: ScreenUtil.getSpacing(smallPhone: 8, mobile: 16),
-                ),
-                child,
-              ],
-            ),
-          ),
-        ),
       );
     }
-  }
 
-  static Future<void> showThemed({
-    required BuildContext context,
-    required String title,
-    required Widget child,
-    bool barrierDismissible = true,
-    Color? backgroundColor,
-    Color? titleColor,
-    Color? contentColor,
-    List<Widget>? actions,
-  }) async {
-    final isDark = Theme.of(context).brightness == Brightness.dark;
-    return showDialog<void>(
+    return showDialog<T>(
       context: context,
       barrierDismissible: barrierDismissible,
       builder: (context) => AlertDialog(
-        backgroundColor:
-            backgroundColor ??
-            (isDark
-                ? ColorConstant.surfaceColorDark
-                : ColorConstant.surfaceColorLight),
-        title: Text(
-          title,
-          style: TextStyle(
-            color:
-                titleColor ??
-                (isDark
-                    ? ColorConstant.textPrimaryColorDark
-                    : ColorConstant.textPrimaryColorLight),
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-        content: DefaultTextStyle(
-          style: TextStyle(
-            color:
-                contentColor ??
-                (isDark
-                    ? ColorConstant.textSecondaryColorDark
-                    : ColorConstant.textSecondaryColorLight),
-          ),
+        title: TextWidget.heading3(title, context: context),
+        content: Padding(
+          padding: padding ?? EdgeInsets.all(16.w),
           child: child,
         ),
-        actions: actions,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(12.r),
+        ),
       ),
     );
   }
 
-  // TEMPORARY: Add logout confirmation dialog
-  static Future<bool?> showLogoutConfirmation(BuildContext context) {
-    if (Platform.isIOS) {
-      return showCupertinoDialog<bool>(
-        context: context,
-        builder: (context) => CupertinoAlertDialog(
-          title: TextWidget.heading3('Sign Out', context: context),
-          content: TextWidget.body(
-            'Are you sure you want to sign out?',
-            textAlign: TextAlign.center,
-            context: context,
-          ),
-          actions: [
-            CupertinoDialogAction(
-              child: TextWidget.body('Cancel', context: context),
-              onPressed: () => context.pop(false),
-            ),
-            CupertinoDialogAction(
-              isDestructiveAction: true,
-              onPressed: () {
-                context.pop(true);
-                context.read<AuthBloc>().add(LogoutRequested());
-                context.read<RoleResolverCubit>().clearSavedRole();
-              },
-              child: TextWidget.body('Sign Out', context: context),
-            ),
-          ],
-        ),
-      );
-    } else {
-      return showDialog<bool>(
-        context: context,
-        barrierDismissible: true,
-        builder: (context) => Dialog(
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(
-              ScreenUtil.getResponsiveValue(
-                smallPhone: 12,
-                mobile: 16,
-                tablet: 20,
-                largeTablet: 24,
-              ),
-            ),
-          ),
-          child: Padding(
-            padding: EdgeInsets.all(
-              ScreenUtil.getResponsiveValue(
-                smallPhone: 16,
-                mobile: 24,
-                tablet: 28,
-                largeTablet: 32,
-              ),
-            ),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                IconWidget.large(Icons.logout, color: ColorConstant.orange),
-                SpacerWidget.medium(),
-                TextWidget.heading3('Sign Out', context: context),
-                SpacerWidget.small(),
-                TextWidget.body(
-                  'Are you sure you want to sign out?',
-                  textAlign: TextAlign.center,
+  static Future<bool?> confirm({
+    required BuildContext context,
+    required String title,
+    required String message,
+    String confirmText = 'Confirm',
+    String cancelText = 'Cancel',
+    Color? confirmColor,
+    bool barrierDismissible = true,
+  }) {
+    return show<bool>(
+      context: context,
+      title: title,
+      barrierDismissible: barrierDismissible,
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          TextWidget.body(message, context: context),
+          SpacerWidget.medium(),
+          Row(
+            children: [
+              Expanded(
+                child: ButtonWidget.secondary(
+                  label: cancelText,
+                  onPressed: () => Navigator.of(context).pop(false),
                   context: context,
                 ),
-                SpacerWidget.large(),
-                Row(
-                  children: [
-                    Expanded(
-                      child: ButtonWidget.secondary(
-                        context: context,
-                        label: 'Cancel',
-                        onPressed: () => context.pop(false),
-                      ),
-                    ),
-                    SpacerWidget.widthMedium(),
-                    Expanded(
-                      child: ButtonWidget.secondary(
-                        context: context,
-                        label: 'Sign Out',
-                        onPressed: () {
-                          context.pop(true);
-                          context.read<AuthBloc>().add(LogoutRequested());
-                        },
-                        foregroundColor: ColorConstant.orange,
-                        icon: Icons.logout,
-                      ),
-                    ),
-                  ],
+              ),
+              SizedBox(width: 12.w),
+              Expanded(
+                child: ButtonWidget.primary(
+                  label: confirmText,
+                  backgroundColor: confirmColor,
+                  onPressed: () => Navigator.of(context).pop(true),
+                  context: context,
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
-        ),
-      );
-    }
+        ],
+      ),
+    );
+  }
+
+  static Future<void> info({
+    required BuildContext context,
+    required String title,
+    required String message,
+    String buttonText = 'OK',
+  }) {
+    return show<void>(
+      context: context,
+      title: title,
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          TextWidget.body(message, context: context),
+          SpacerWidget.medium(),
+          ButtonWidget.primary(
+            label: buttonText,
+            onPressed: () => Navigator.of(context).pop(),
+            context: context,
+          ),
+        ],
+      ),
+    );
+  }
+
+  static Future<void> error({
+    required BuildContext context,
+    required String title,
+    required String message,
+    String buttonText = 'OK',
+  }) {
+    return show<void>(
+      context: context,
+      title: title,
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          IconWidget.large(Icons.error_outline, color: ColorConstant.red),
+          SpacerWidget.small(),
+          TextWidget.body(message, context: context),
+          SpacerWidget.medium(),
+          ButtonWidget.primary(
+            label: buttonText,
+            backgroundColor: ColorConstant.red,
+            onPressed: () => Navigator.of(context).pop(),
+            context: context,
+          ),
+        ],
+      ),
+    );
+  }
+
+  static Future<void> logout({required BuildContext context}) {
+    return show<void>(
+      context: context,
+      title: 'Logout',
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          TextWidget.body('Are you sure you want to logout?', context: context),
+          SpacerWidget.medium(),
+          Row(
+            children: [
+              Expanded(
+                child: ButtonWidget.secondary(
+                  label: 'Cancel',
+                  onPressed: () => Navigator.of(context).pop(),
+                  context: context,
+                ),
+              ),
+              SizedBox(width: 12.w),
+              Expanded(
+                child: ButtonWidget.primary(
+                  label: 'Logout',
+                  backgroundColor: ColorConstant.red,
+                  onPressed: () {
+                    context.read<AuthBloc>().add(LogoutRequested());
+                    context.read<RoleResolverCubit>().clearSavedRole();
+                    Navigator.of(context).pop();
+                    context.go('/login');
+                  },
+                  context: context,
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
   }
 }
