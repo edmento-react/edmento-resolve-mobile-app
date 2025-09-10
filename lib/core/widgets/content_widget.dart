@@ -1,5 +1,5 @@
-import 'package:edmentoresolve/core/widgets/card_widget.dart';
-import 'package:edmentoresolve/core/widgets/icon_widget.dart';
+import 'package:edmentoresolve/core/widgets/cards/card_widget.dart';
+import 'package:edmentoresolve/core/widgets/media/icon_widget.dart';
 import 'package:edmentoresolve/core/widgets/spacer_widget.dart';
 import 'package:edmentoresolve/core/widgets/text_widget.dart';
 import 'package:flutter/material.dart';

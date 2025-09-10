@@ -1,6 +1,6 @@
 import 'package:edmentoresolve/core/constants/app_constants.dart';
 import 'package:edmentoresolve/core/constants/color_constant.dart';
-import 'package:edmentoresolve/core/constants/routes.dart';
+import 'package:edmentoresolve/core/config/routes.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:edmentoresolve/core/widgets/index.dart';
 import 'package:edmentoresolve/features/authentication/presentation/bloc/auth_bloc.dart';

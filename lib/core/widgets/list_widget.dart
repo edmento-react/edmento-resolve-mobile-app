@@ -1,5 +1,6 @@
-import 'package:edmentoresolve/core/widgets/empty_state_widget.dart';
-import 'package:edmentoresolve/core/widgets/loading_indicator.dart';
+import 'package:edmentoresolve/core/widgets/feedback/empty_state_widget.dart';
+import 'package:edmentoresolve/core/widgets/feedback/loading_indicator.dart';
+import 'package:edmentoresolve/core/widgets/spacer_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -55,7 +56,7 @@ class ListWidget<T> extends StatelessWidget {
       physics: physics,
       shrinkWrap: shrinkWrap,
       itemCount: items.length,
-      separatorBuilder: (context, index) => separator ?? SizedBox(height: 8.h),
+      separatorBuilder: (context, index) => separator ?? SpacerWidget.small(),
       itemBuilder: (context, index) =>
           itemBuilder(context, items[index], index),
     );

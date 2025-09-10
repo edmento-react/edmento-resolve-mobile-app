@@ -9,8 +9,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 
-import 'button_widget.dart';
-import 'icon_widget.dart';
+import 'buttons/button_widget.dart';
+import 'media/icon_widget.dart';
 import 'spacer_widget.dart';
 import 'text_widget.dart';
 
@@ -75,16 +75,16 @@ class AppDialog {
               Expanded(
                 child: ButtonWidget.secondary(
                   label: cancelText,
-                  onPressed: () => Navigator.of(context).pop(false),
+                  onPressed: () => context.pop(false),
                   context: context,
                 ),
               ),
-              SizedBox(width: 12.w),
+              SpacerWidget.widthCustom(12),
               Expanded(
                 child: ButtonWidget.primary(
                   label: confirmText,
                   backgroundColor: confirmColor,
-                  onPressed: () => Navigator.of(context).pop(true),
+                  onPressed: () => context.pop(true),
                   context: context,
                 ),
               ),
@@ -111,7 +111,7 @@ class AppDialog {
           SpacerWidget.medium(),
           ButtonWidget.primary(
             label: buttonText,
-            onPressed: () => Navigator.of(context).pop(),
+            onPressed: () => context.pop(),
             context: context,
           ),
         ],
@@ -138,7 +138,7 @@ class AppDialog {
           ButtonWidget.primary(
             label: buttonText,
             backgroundColor: ColorConstant.red,
-            onPressed: () => Navigator.of(context).pop(),
+            onPressed: () => context.pop(),
             context: context,
           ),
         ],
@@ -160,11 +160,11 @@ class AppDialog {
               Expanded(
                 child: ButtonWidget.secondary(
                   label: 'Cancel',
-                  onPressed: () => Navigator.of(context).pop(),
+                  onPressed: () => context.pop(),
                   context: context,
                 ),
               ),
-              SizedBox(width: 12.w),
+              SpacerWidget.widthCustom(12),
               Expanded(
                 child: ButtonWidget.primary(
                   label: 'Logout',
@@ -172,7 +172,7 @@ class AppDialog {
                   onPressed: () {
                     context.read<AuthBloc>().add(LogoutRequested());
                     context.read<RoleResolverCubit>().clearSavedRole();
-                    Navigator.of(context).pop();
+                    context.pop();
                     context.go('/login');
                   },
                   context: context,

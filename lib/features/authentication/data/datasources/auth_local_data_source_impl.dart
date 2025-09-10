@@ -1,6 +1,6 @@
 import 'package:flutter/foundation.dart';
 
-import '../../../../core/utils/storage_util.dart';
+import '../../../../core/data/storage/storage_util.dart';
 import '../models/auth_result_model.dart';
 import '../models/user_model.dart';
 import 'auth_local_data_source.dart';

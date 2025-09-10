@@ -1,7 +1,7 @@
 import 'package:edmentoresolve/core/constants/color_constant.dart';
-import 'package:edmentoresolve/core/constants/routes.dart';
-import 'package:edmentoresolve/core/widgets/primary_button.dart';
-import 'package:edmentoresolve/core/widgets/reusable_text_field.dart';
+import 'package:edmentoresolve/core/config/routes.dart';
+import 'package:edmentoresolve/core/widgets/buttons/primary_button.dart';
+import 'package:edmentoresolve/core/widgets/forms/reusable_text_field.dart';
 import 'package:edmentoresolve/core/widgets/spacer_widget.dart';
 import 'package:edmentoresolve/core/widgets/text_widget.dart';
 import 'package:edmentoresolve/features/authentication/presentation/bloc/forgot_password_cubit.dart';

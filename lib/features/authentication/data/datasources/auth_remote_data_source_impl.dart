@@ -2,7 +2,7 @@ import 'package:edmentoresolve/features/authentication/data/models/role_model.da
 
 import '../../../../core/constants/api_constants.dart';
 import '../../../../core/error/exceptions.dart';
-import '../../../../core/network/api_client.dart';
+import '../../../../core/data/network/api_client.dart';
 import '../models/auth_result_model.dart';
 import '../models/user_model.dart';
 import 'auth_remote_data_source.dart';

@@ -1,11 +1,13 @@
 import 'package:edmentoresolve/core/constants/color_constant.dart';
-import 'package:edmentoresolve/core/constants/routes.dart';
-import 'package:edmentoresolve/core/widgets/primary_button.dart';
+import 'package:edmentoresolve/core/config/routes.dart';
+import 'package:edmentoresolve/core/widgets/buttons/primary_button.dart';
 import 'package:edmentoresolve/core/widgets/text_widget.dart';
 import 'package:edmentoresolve/features/authentication/domain/usecases/verify_otp_usecase.dart';
 import 'package:edmentoresolve/features/authentication/presentation/bloc/otp_cubit.dart';
+import 'package:edmentoresolve/core/widgets/spacer_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get_it/get_it.dart';
 import 'package:go_router/go_router.dart';
 
@@ -94,9 +96,9 @@ class _OtpViewState extends State<_OtpView> {
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  const SizedBox(height: 32),
-                  TextWidget.heading1('Enter OTP', context: context),
-                  const SizedBox(height: 8),
+                                      SpacerWidget.xlarge(),
+                    TextWidget.heading1('Enter OTP', context: context),
+                  SpacerWidget.small(),
                   TextWidget.body(
                     'We have sent a 6-digit verification code to',
                     context: context,
@@ -107,12 +109,12 @@ class _OtpViewState extends State<_OtpView> {
                     color: ColorConstant.primaryLight,
                     fontWeight: FontWeight.bold,
                   ),
-                  const SizedBox(height: 32),
+                  SpacerWidget.xlarge(),
                   Wrap(
                     children: List.generate(6, (index) {
                       return Container(
-                        width: 48,
-                        margin: const EdgeInsets.symmetric(horizontal: 6),
+                        width: 48.w,
+                        margin: EdgeInsets.symmetric(horizontal: 6.w),
                         child: TextField(
                           controller: _controllers[index],
                           focusNode: _focusNodes[index],
@@ -148,7 +150,7 @@ class _OtpViewState extends State<_OtpView> {
                       );
                     }),
                   ),
-                  const SizedBox(height: 24),
+                  SpacerWidget.large(),
                   if (state.errorMessage != null)
                     Column(
                       children: [
@@ -158,7 +160,7 @@ class _OtpViewState extends State<_OtpView> {
                           color: Colors.red,
                           fontWeight: FontWeight.w600,
                         ),
-                        const SizedBox(height: 12),
+                        SpacerWidget.custom(12),
                       ],
                     ),
                   PrimaryButton(
@@ -170,7 +172,7 @@ class _OtpViewState extends State<_OtpView> {
                         ? () => context.read<OtpCubit>().submitOtp()
                         : null,
                   ),
-                  const SizedBox(height: 24),
+                  SpacerWidget.large(),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
@@ -178,7 +180,7 @@ class _OtpViewState extends State<_OtpView> {
                         'Didn\'t receive the code?',
                         context: context,
                       ),
-                      const SizedBox(width: 8),
+                      SpacerWidget.widthSmall(),
                       state.secondsRemaining > 0
                           ? TextWidget.body(
                               'Resend in 0:${state.secondsRemaining.toString().padLeft(2, '0')}',
@@ -196,7 +198,7 @@ class _OtpViewState extends State<_OtpView> {
                             ),
                     ],
                   ),
-                  const SizedBox(height: 32),
+                  SpacerWidget.xlarge(),
                 ],
               ),
             ),

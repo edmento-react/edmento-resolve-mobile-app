@@ -1,6 +1,6 @@
 // import 'dart:async';
 
-// import 'package:edmentoresolve/core/utils/storage_util.dart';
+// import 'package:edmentoresolve/core/data/storage/storage_util.dart';
 // import 'package:edmentoresolve/features/authentication/presentation/bloc/role_cubit.dart';
 // import 'package:edmentoresolve/features/profile/presentation/bloc/theme_cubit.dart';
 // import 'package:flutter/material.dart';
@@ -10,7 +10,7 @@
 
 // import 'core/constants/app_constants.dart';
 // import 'core/constants/color_constant.dart';
-// import 'core/constants/routes.dart';
+// import 'core/config/routes.dart';
 // import 'core/di/injection_container.dart' as di;
 // import 'core/utils/performance_utils.dart';
 // import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -126,21 +126,22 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
 import 'package:rive/rive.dart';
 
+import 'core/config/routes.dart';
 import 'core/constants/app_constants.dart';
 import 'core/constants/color_constant.dart';
-import 'core/constants/routes.dart';
+import 'core/data/storage/storage_util.dart';
 import 'core/di/injection_container.dart' as di;
 import 'core/security/security_cubit.dart';
 import 'core/utils/performance_utils.dart';
-import 'core/utils/storage_util.dart';
 import 'features/authentication/presentation/bloc/auth_bloc.dart';
 import 'features/authentication/presentation/bloc/login_cubit.dart';
 import 'features/authentication/presentation/bloc/role_cubit.dart';
-import 'features/common/presentation/cubit/theme_cubit.dart';
+import 'features/notifications/presentation/cubit/theme_cubit.dart';
 
-final GlobalKey<NavigatorState> _navKey = GlobalKey<NavigatorState>();
+// final GlobalKey<NavigatorState> _navKey = GlobalKey<NavigatorState>();
 
 Future<void> main() async {
   // Keep everything inside one zone
@@ -148,9 +149,9 @@ Future<void> main() async {
     () async {
       WidgetsFlutterBinding.ensureInitialized();
 
-      void logThreat(String name) => print('[TALSEC] $name detected');
+      // void logThreat(String name) => print('[TALSEC] $name detected');
 
-      // Early perf + UI setup
+      // Minimal performance setup
       PerformanceUtils.initialize();
       unawaited(RiveFile.initialize());
       SystemChrome.setSystemUIOverlayStyle(
@@ -613,8 +614,8 @@ class _SecurityDialogListenerState extends State<_SecurityDialogListener> {
             actions: [
               TextButton(
                 onPressed: () {
-                  context.read<SecurityCubit>().clear(severe);
-                  Navigator.of(context).pop();
+                  ctx.read<SecurityCubit>().clear(severe);
+                  ctx.pop();
                   _dialogShowing = false;
                 },
                 child: TextWidget.label('OK', context: ctx),

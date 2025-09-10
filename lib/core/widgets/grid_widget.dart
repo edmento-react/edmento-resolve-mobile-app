@@ -1,5 +1,5 @@
-import 'package:edmentoresolve/core/widgets/empty_state_widget.dart';
-import 'package:edmentoresolve/core/widgets/loading_indicator.dart';
+import 'package:edmentoresolve/core/widgets/feedback/empty_state_widget.dart';
+import 'package:edmentoresolve/core/widgets/feedback/loading_indicator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 

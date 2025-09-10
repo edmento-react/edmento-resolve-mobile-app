@@ -4,7 +4,7 @@ import 'package:edmentoresolve/features/authentication/data/models/role_model.da
 import 'package:flutter/material.dart';
 
 import '../../../../core/error/exceptions.dart';
-import '../../../../core/network/network_info.dart';
+import '../../../../core/data/network/network_info.dart';
 import '../../domain/entities/auth_result_entity.dart'; // Keep this for the return type of the repository methods
 import '../../domain/entities/user_entity.dart'; // Keep this for the return type of getCurrentUser
 import '../../domain/repositories/auth_repository.dart';

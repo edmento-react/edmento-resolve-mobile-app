@@ -1,11 +1,13 @@
 // new_password_page.dart
-import 'package:edmentoresolve/core/constants/routes.dart';
+import 'package:edmentoresolve/core/config/routes.dart';
+import 'package:edmentoresolve/core/widgets/spacer_widget.dart';
 import 'package:edmentoresolve/core/widgets/text_widget.dart';
 import 'package:edmentoresolve/features/authentication/domain/usecases/new_password_usecase.dart';
 import 'package:edmentoresolve/features/authentication/presentation/bloc/auth_bloc.dart';
 import 'package:edmentoresolve/features/authentication/presentation/bloc/new_password_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get_it/get_it.dart';
 import 'package:go_router/go_router.dart';
 
@@ -44,7 +46,9 @@ class _NewPasswordView extends StatelessWidget {
         }
       },
       child: Scaffold(
-        appBar: AppBar(title: TextWidget.heading4('Set New Password', context: context)),
+        appBar: AppBar(
+          title: TextWidget.heading4('Set New Password', context: context),
+        ),
         body: BlocConsumer<NewPasswordCubit, NewPasswordState>(
           listener: (context, state) {
             if (state.success) {
@@ -57,14 +61,19 @@ class _NewPasswordView extends StatelessWidget {
                 // Debug removed
               }
               ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(content: TextWidget.body('Password reset successful!', context: context)),
+                SnackBar(
+                  content: TextWidget.body(
+                    'Password reset successful!',
+                    context: context,
+                  ),
+                ),
               );
               // context.read<AuthBloc>().add(LogoutRequested());
             }
           },
           builder: (context, state) {
             return Padding(
-              padding: const EdgeInsets.all(24),
+              padding: EdgeInsets.all(24.w),
               child: Column(
                 children: [
                   TextField(
@@ -76,7 +85,7 @@ class _NewPasswordView extends StatelessWidget {
                       labelText: 'New Password',
                     ),
                   ),
-                  const SizedBox(height: 12),
+                  SpacerWidget.custom(12),
                   TextField(
                     obscureText: true,
                     onChanged: (value) => context
@@ -86,20 +95,23 @@ class _NewPasswordView extends StatelessWidget {
                       labelText: 'Confirm Password',
                     ),
                   ),
-                  const SizedBox(height: 24),
+                  SpacerWidget.large(),
                   if (state.errorMessage.isNotEmpty)
                     TextWidget.body(
                       state.errorMessage,
                       context: context,
                       color: Colors.red,
                     ),
-                  SizedBox(height: 8),
+                  SpacerWidget.small(),
                   state.isLoading
                       ? const CircularProgressIndicator()
                       : ElevatedButton(
                           onPressed: () =>
                               context.read<NewPasswordCubit>().submit(),
-                          child: TextWidget.label('Set Password', context: context),
+                          child: TextWidget.label(
+                            'Set Password',
+                            context: context,
+                          ),
                         ),
                 ],
               ),

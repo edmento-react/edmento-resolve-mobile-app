@@ -128,15 +128,15 @@ class AppTheme {
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(_inputBorderRadius),
-          borderSide: BorderSide(color: colorScheme.primary, width: 2),
+          borderSide: BorderSide(color: colorScheme.primary, width: 2.w),
         ),
         errorBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(_inputBorderRadius),
-          borderSide: BorderSide(color: colorScheme.error, width: 1.5),
+          borderSide: BorderSide(color: colorScheme.error, width: 1.5.w),
         ),
         focusedErrorBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(_inputBorderRadius),
-          borderSide: BorderSide(color: colorScheme.error, width: 2),
+          borderSide: BorderSide(color: colorScheme.error, width: 2.w),
         ),
         labelStyle: TextStyle(
           color: isDark

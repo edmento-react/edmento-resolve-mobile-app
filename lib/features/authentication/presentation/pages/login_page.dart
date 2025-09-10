@@ -1,8 +1,8 @@
 import 'package:edmentoresolve/core/constants/color_constant.dart';
-import 'package:edmentoresolve/core/constants/routes.dart';
-import 'package:edmentoresolve/core/widgets/global_snackbar.dart';
-import 'package:edmentoresolve/core/widgets/primary_button.dart';
-import 'package:edmentoresolve/core/widgets/reusable_text_field.dart';
+import 'package:edmentoresolve/core/config/routes.dart';
+import 'package:edmentoresolve/core/widgets/feedback/global_snackbar.dart';
+import 'package:edmentoresolve/core/widgets/buttons/primary_button.dart';
+import 'package:edmentoresolve/core/widgets/forms/reusable_text_field.dart';
 import 'package:edmentoresolve/core/widgets/spacer_widget.dart';
 import 'package:edmentoresolve/core/widgets/text_widget.dart';
 import 'package:edmentoresolve/features/authentication/presentation/widgets/or_widget.dart';
@@ -156,7 +156,7 @@ class _LoginPageViewState extends State<_LoginPageView> {
                         TextWidget.heading1(
                           'Welcome Back!',
                           textAlign: TextAlign.center,
-                          fontSize: 30,
+                          fontSize: 30.sp,
                           fontWeight: FontWeight.w500,
                           context: context,
                         ),
@@ -300,7 +300,7 @@ class _LoginPageViewState extends State<_LoginPageView> {
                               FocusScope.of(context).unfocus();
                             },
                             style: OutlinedButton.styleFrom(
-                              padding: const EdgeInsets.symmetric(vertical: 16),
+                              padding: EdgeInsets.symmetric(vertical: 16.h),
                               side: BorderSide(
                                 color:
                                     Theme.of(context).brightness ==
@@ -329,7 +329,7 @@ class _LoginPageViewState extends State<_LoginPageView> {
                                   'Continue with Email',
                                   context: context,
                                   fontWeight: FontWeight.w500,
-                                  fontSize: 16,
+                                  fontSize: 16.sp,
                                   color:
                                       Theme.of(context).brightness ==
                                           Brightness.dark

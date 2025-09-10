@@ -1,7 +1,7 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../../core/utils/storage_util.dart';
+import '../../../../core/data/storage/storage_util.dart';
 import '../../domain/entities/auth_result_entity.dart';
 
 part 'role_state.dart';

@@ -1,11 +1,15 @@
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:dio/dio.dart';
-import 'package:edmentoresolve/core/utils/storage_util.dart';
-import 'package:edmentoresolve/features/common/data/repositories/mock_notifications_repository.dart';
-import 'package:edmentoresolve/features/common/domain/repositories/notifications_repository.dart';
-import 'package:edmentoresolve/features/common/presentation/cubit/notifications_cubit.dart';
-import 'package:edmentoresolve/features/teacher/data/repositories/mock_communication_repository.dart';
-import 'package:edmentoresolve/features/teacher/domain/repositories/communication_repository.dart';
+import 'package:edmentoresolve/core/data/storage/storage_util.dart';
+import 'package:edmentoresolve/features/notifications/data/repositories/mock_notifications_repository.dart';
+import 'package:edmentoresolve/features/notifications/domain/repositories/notifications_repository.dart';
+import 'package:edmentoresolve/features/notifications/presentation/cubit/notifications_cubit.dart';
+import 'package:edmentoresolve/features/shared/data/datasources/communication_remote_data_source.dart';
+import 'package:edmentoresolve/features/shared/data/datasources/tasks_remote_data_source.dart';
+import 'package:edmentoresolve/features/shared/data/repositories/communication_repository_impl.dart';
+import 'package:edmentoresolve/features/shared/data/repositories/tasks_repository_impl.dart';
+import 'package:edmentoresolve/features/shared/domain/repositories/communication_repository.dart';
+import 'package:edmentoresolve/features/shared/domain/repositories/tasks_repository.dart';
 import 'package:get_it/get_it.dart';
 
 import '../../features/authentication/data/datasources/auth_local_data_source.dart';
@@ -22,9 +26,9 @@ import '../../features/authentication/domain/usecases/verify_otp_usecase.dart';
 import '../../features/authentication/presentation/bloc/auth_bloc.dart';
 import '../../features/authentication/presentation/bloc/login_cubit.dart';
 import '../../features/authentication/presentation/bloc/role_cubit.dart';
-import '../database/database_service.dart';
-import '../network/api_client.dart';
-import '../network/network_info.dart';
+import '../data/database/database_service.dart';
+import '../data/network/api_client.dart';
+import '../data/network/network_info.dart';
 
 final GetIt sl = GetIt.instance;
 
@@ -97,11 +101,28 @@ Future<void> init() async {
   );
   // sl.registerLazySingleton<INotificationsRepository>(() => NotificationsApiRepository(dioClient));
 
-  if (!sl.isRegistered<ICommunicationRepository>()) {
-    sl.registerLazySingleton<ICommunicationRepository>(
-      () => MockCommunicationRepository(),
-    );
-  }
+  // ---------------- Shared Features ----------------
+  // Communication Data sources
+  sl.registerLazySingleton<ICommunicationRemoteDataSource>(
+    () => CommunicationRemoteDataSource(),
+  );
+
+  // Communication Repository
+  sl.registerLazySingleton<ICommunicationRepository>(
+    () => CommunicationRepositoryImpl(
+      remoteDataSource: sl<ICommunicationRemoteDataSource>(),
+    ),
+  );
+
+  // Tasks Data sources
+  sl.registerLazySingleton<ITasksRemoteDataSource>(
+    () => TasksRemoteDataSource(),
+  );
+
+  // Tasks Repository
+  sl.registerLazySingleton<ITasksRepository>(
+    () => TasksRepositoryImpl(remoteDataSource: sl<ITasksRemoteDataSource>()),
+  );
 
   // ---------------- Future features ----------------
   // Add other feature DI here…

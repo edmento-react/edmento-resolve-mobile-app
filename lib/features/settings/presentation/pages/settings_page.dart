@@ -140,7 +140,7 @@ class SettingsPage extends StatelessWidget {
                     },
                   ),
                 ),
-                const SizedBox(height: 24),
+                SpacerWidget.large(),
                 ButtonWidget.secondary(
                   context: context,
                   label: 'Reset Settings',
@@ -153,7 +153,7 @@ class SettingsPage extends StatelessWidget {
                   },
                   foregroundColor: ColorConstant.orange,
                 ),
-                const SizedBox(height: 24),
+                SpacerWidget.large(),
                 ButtonWidget.secondary(
                   context: context,
                   label: 'About',

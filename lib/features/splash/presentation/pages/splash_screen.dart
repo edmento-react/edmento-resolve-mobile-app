@@ -1,5 +1,5 @@
 // splash_screen.dart
-import 'package:edmentoresolve/core/constants/routes.dart';
+import 'package:edmentoresolve/core/config/routes.dart';
 import 'package:edmentoresolve/core/widgets/text_widget.dart';
 import 'package:edmentoresolve/features/authentication/presentation/bloc/auth_bloc.dart';
 import 'package:edmentoresolve/features/authentication/presentation/bloc/role_cubit.dart';
