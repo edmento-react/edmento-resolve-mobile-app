@@ -1,7 +1,7 @@
-import 'package:edmentoresolve/core/constants/color_constant.dart';
 import 'package:edmentoresolve/core/config/routes.dart';
-import 'package:edmentoresolve/core/widgets/feedback/global_snackbar.dart';
+import 'package:edmentoresolve/core/constants/color_constant.dart';
 import 'package:edmentoresolve/core/widgets/buttons/primary_button.dart';
+import 'package:edmentoresolve/core/widgets/feedback/global_snackbar.dart';
 import 'package:edmentoresolve/core/widgets/forms/reusable_text_field.dart';
 import 'package:edmentoresolve/core/widgets/spacer_widget.dart';
 import 'package:edmentoresolve/core/widgets/text_widget.dart';
@@ -124,8 +124,10 @@ class _LoginPageViewState extends State<_LoginPageView> {
           if (state is AuthFailure) {
             GlobalSnackbar.error(context: context, message: state.message);
           } else if (state is AuthSuccess) {
-            // Keep UX snappy: clear focus and let the gate show the right page.
+            // Keep UX snappy: clear focus and navigate to AuthWrapper
             context.read<LoginCubit>().clearAllFocus(isLogin: true);
+            // Navigate to AuthWrapper after successful login
+            context.go(AppRoutes.authWrapper);
           }
         },
         child: SafeArea(

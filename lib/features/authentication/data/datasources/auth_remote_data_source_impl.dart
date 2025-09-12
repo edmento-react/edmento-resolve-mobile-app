@@ -1,8 +1,8 @@
 import 'package:edmentoresolve/features/authentication/data/models/role_model.dart';
 
 import '../../../../core/constants/api_constants.dart';
-import '../../../../core/error/exceptions.dart';
 import '../../../../core/data/network/api_client.dart';
+import '../../../../core/error/exceptions.dart';
 import '../models/auth_result_model.dart';
 import '../models/user_model.dart';
 import 'auth_remote_data_source.dart';
@@ -30,6 +30,8 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
         // Extract sessionId using RegExp
         final sessionIdMatch = RegExp(r'sessionId=([^;]+)').firstMatch(cookie);
         sessionId = sessionIdMatch?.group(1);
+
+        print('session id: $sessionId');
 
         // Avoid heavy logging in release
       }
@@ -142,7 +144,7 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
       if (e is Failure) {
         rethrow;
       }
-      throw ServerFailure('Failed to send forgot password OTP: $e');
+      throw ServerFailure('Failed to verify OTP: $e');
     }
   }
 
@@ -162,12 +164,12 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
       if (e is Failure) {
         rethrow;
       }
-      throw ServerFailure('Failed to send forgot password OTP: $e');
+      throw ServerFailure('Failed to reset password: $e');
     }
   }
 
   @override
-  Future<RoleModel> selectRlole(String roleId) async {
+  Future<RoleModel> selectRole(String roleId) async {
     try {
       final response = await apiClient.post(
         ApiConstants.selectRole,
@@ -176,13 +178,13 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
       if (response.statusCode == 200) {
         return RoleModel.fromJson(response.data['currentRole']);
       } else {
-        return throw ServerFailure('Select role has issue');
+        throw const ServerFailure('Select role has issue');
       }
     } catch (e) {
       if (e is Failure) {
         rethrow;
       }
-      throw ServerFailure('Failed to send forgot password OTP: $e');
+      throw ServerFailure('Failed to select role: $e');
     }
   }
 }

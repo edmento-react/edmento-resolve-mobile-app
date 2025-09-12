@@ -1,7 +1,7 @@
+import 'package:edmentoresolve/core/config/routes.dart';
 import 'package:edmentoresolve/core/constants/color_constant.dart';
 import 'package:edmentoresolve/core/constants/padding_constant.dart';
-import 'package:edmentoresolve/core/config/routes.dart';
-import 'package:edmentoresolve/core/widgets/cards/glass_container.dart';
+import 'package:edmentoresolve/core/widgets/glass_button.dart';
 import 'package:edmentoresolve/core/widgets/index.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -62,22 +62,11 @@ class TeacherHomePage extends StatelessWidget {
             onTap: () {
               context.push(AppRoutes.notifications);
             },
-            child: GlassContainer(
-              width: 45,
-              height: 45,
-              borderRadius: 30,
+            child: GlassButton(
               child: const Icon(Icons.notifications_none_rounded),
+              onPressed: () {},
             ),
           ),
-
-          // LiquidGlass(
-          //   shape: LiquidRoundedSuperellipse(borderRadius: Radius.circular(50)),
-          //   child: const SizedBox(
-          //     height: 60,
-          //     width: 60,
-          //     child: Center(child: Icon(Icons.notifications_active)),
-          //   ),
-          // ),
         ],
       ),
       body: SingleChildScrollView(

@@ -1305,7 +1305,7 @@ class _$ClassDao extends ClassDao {
 
   @override
   Future<List<ClassEntity>> findAllClasses() async {
-    return _queryAdapter.queryList('SELECT * FROM ClassEntity',
+    return _queryAdapter.queryList('SELECT * FROM classes',
         mapper: (Map<String, Object?> row) => ClassEntity(
             id: row['id'] as int?,
             classId: row['class_id'] as String,
@@ -1326,19 +1326,19 @@ class _$ClassDao extends ClassDao {
 
   @override
   Future<void> deleteAllClasses() async {
-    await _queryAdapter.queryNoReturn('DELETE FROM ClassEntity');
+    await _queryAdapter.queryNoReturn('DELETE FROM classes');
   }
 
   @override
   Future<int?> getClassCount() async {
-    return _queryAdapter.query('SELECT COUNT(*) FROM ClassEntity',
+    return _queryAdapter.query('SELECT COUNT(*) FROM classes',
         mapper: (Map<String, Object?> row) => row.values.first as int);
   }
 
   @override
   Future<List<ClassEntity>> getClassesByTeacherId(String teacherId) async {
     return _queryAdapter.queryList(
-        'SELECT * FROM ClassEntity WHERE teacherId = ?1',
+        'SELECT * FROM classes WHERE teacher_id = ?1',
         mapper: (Map<String, Object?> row) => ClassEntity(
             id: row['id'] as int?,
             classId: row['class_id'] as String,
@@ -1398,7 +1398,7 @@ class _$AttendanceDao extends AttendanceDao {
 
   @override
   Future<List<AttendanceEntity>> findAllAttendance() async {
-    return _queryAdapter.queryList('SELECT * FROM AttendanceEntity',
+    return _queryAdapter.queryList('SELECT * FROM attendance',
         mapper: (Map<String, Object?> row) => AttendanceEntity(
             id: row['id'] as int?,
             attendanceId: row['attendance_id'] as String,
@@ -1416,12 +1416,12 @@ class _$AttendanceDao extends AttendanceDao {
 
   @override
   Future<void> deleteAllAttendance() async {
-    await _queryAdapter.queryNoReturn('DELETE FROM AttendanceEntity');
+    await _queryAdapter.queryNoReturn('DELETE FROM attendance');
   }
 
   @override
   Future<int?> getAttendanceCount() async {
-    return _queryAdapter.query('SELECT COUNT(*) FROM AttendanceEntity',
+    return _queryAdapter.query('SELECT COUNT(*) FROM attendance',
         mapper: (Map<String, Object?> row) => row.values.first as int);
   }
 
@@ -1429,7 +1429,7 @@ class _$AttendanceDao extends AttendanceDao {
   Future<List<AttendanceEntity>> getAttendanceByStudentId(
       String studentId) async {
     return _queryAdapter.queryList(
-        'SELECT * FROM AttendanceEntity WHERE studentId = ?1',
+        'SELECT * FROM attendance WHERE student_id = ?1',
         mapper: (Map<String, Object?> row) => AttendanceEntity(
             id: row['id'] as int?,
             attendanceId: row['attendance_id'] as String,

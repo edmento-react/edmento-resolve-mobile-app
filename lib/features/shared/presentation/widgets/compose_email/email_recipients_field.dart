@@ -1,4 +1,5 @@
-import 'package:edmentoresolve/features/shared/data/datasources/people_remote_data_source.dart';
+import 'package:edmentoresolve/core/di/injection_container.dart';
+import 'package:edmentoresolve/features/shared/data/services/users_cache_service.dart';
 import 'package:edmentoresolve/features/shared/domain/entities/person.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -52,7 +53,7 @@ class _EmailRecipientsFieldState extends State<EmailRecipientsField> {
     }
   }
 
-  void _performSearch(String query) async {
+  void _performSearch(String query) {
     if (query.isEmpty) {
       setState(() {
         _searchResults = [];
@@ -66,12 +67,29 @@ class _EmailRecipientsFieldState extends State<EmailRecipientsField> {
     });
 
     try {
-      // In a real app, this would call your actual data source
-      // For now, we'll use the mock data source with real API data
-      final dataSource = PeopleRemoteDataSource();
-      final allPeople = await dataSource.getPeople(searchQuery: query);
+      print('🔍 EmailRecipientsField: Searching for "$query"');
 
-      final filteredResults = allPeople
+      // Get users from cache service
+      final usersCacheService = sl<UsersCacheService>();
+
+      if (!usersCacheService.hasValidCache) {
+        print('⚠️ EmailRecipientsField: No cached users available');
+        setState(() {
+          _searchResults = [];
+          _isLoading = false;
+        });
+        return;
+      }
+
+      // Search users in cache
+      final searchResults = usersCacheService.searchUsers(query);
+
+      print(
+        '🔍 EmailRecipientsField: Found ${searchResults.length} matching users in cache',
+      );
+
+      // Filter out already selected recipients
+      final filteredResults = searchResults
           .where(
             (person) => !widget.selectedRecipients.any(
               (selected) => selected.id == person.id,
@@ -79,11 +97,16 @@ class _EmailRecipientsFieldState extends State<EmailRecipientsField> {
           )
           .toList();
 
+      print(
+        '📋 EmailRecipientsField: After filtering selected recipients: ${filteredResults.length} people',
+      );
+
       setState(() {
         _searchResults = filteredResults;
         _isLoading = false;
       });
     } catch (e) {
+      print('❌ EmailRecipientsField: Error occurred: $e');
       setState(() {
         _searchResults = [];
         _isLoading = false;
@@ -258,7 +281,7 @@ class _EmailRecipientsFieldState extends State<EmailRecipientsField> {
                               ),
                             ),
                             subtitle: Text(
-                              '${person.role} • ${person.email}',
+                              '${person.assignedRoles?.map((role) => role.positionName).join(', ')} • ${person.email}',
                               style: TextStyle(
                                 fontSize: 12.sp,
                                 color: Colors.grey[600],

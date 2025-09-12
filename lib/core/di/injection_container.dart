@@ -26,8 +26,11 @@ import '../../features/authentication/domain/usecases/verify_otp_usecase.dart';
 import '../../features/authentication/presentation/bloc/auth_bloc.dart';
 import '../../features/authentication/presentation/bloc/login_cubit.dart';
 import '../../features/authentication/presentation/bloc/role_cubit.dart';
+import '../../features/shared/data/datasources/people_remote_data_source.dart';
+import '../../features/shared/data/services/users_cache_service.dart';
 import '../data/database/database_service.dart';
 import '../data/network/api_client.dart';
+import '../data/network/api_service.dart';
 import '../data/network/network_info.dart';
 
 final GetIt sl = GetIt.instance;
@@ -54,6 +57,9 @@ Future<void> init() async {
 
   // Single Dio for all repositories/services
   sl.registerLazySingleton<Dio>(() => sl<ApiClient>().dio);
+
+  // ApiService (depends on Dio)
+  sl.registerLazySingleton<ApiService>(() => ApiService(sl<Dio>()));
 
   // Database
   final db = await DatabaseService.getInstance();
@@ -102,6 +108,14 @@ Future<void> init() async {
   // sl.registerLazySingleton<INotificationsRepository>(() => NotificationsApiRepository(dioClient));
 
   // ---------------- Shared Features ----------------
+  // Users Cache Service
+  sl.registerLazySingleton<UsersCacheService>(() => UsersCacheService());
+
+  // People Data sources
+  sl.registerLazySingleton<IPeopleRemoteDataSource>(
+    () => PeopleRemoteDataSourceImpl(sl<ApiService>(), sl()),
+  );
+
   // Communication Data sources
   sl.registerLazySingleton<ICommunicationRemoteDataSource>(
     () => CommunicationRemoteDataSource(),

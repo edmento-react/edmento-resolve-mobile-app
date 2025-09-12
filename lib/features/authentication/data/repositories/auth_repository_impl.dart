@@ -3,8 +3,8 @@ import 'package:dartz/dartz.dart';
 import 'package:edmentoresolve/features/authentication/data/models/role_model.dart';
 import 'package:flutter/material.dart';
 
-import '../../../../core/error/exceptions.dart';
 import '../../../../core/data/network/network_info.dart';
+import '../../../../core/error/exceptions.dart';
 import '../../domain/entities/auth_result_entity.dart'; // Keep this for the return type of the repository methods
 import '../../domain/entities/user_entity.dart'; // Keep this for the return type of getCurrentUser
 import '../../domain/repositories/auth_repository.dart';
@@ -171,8 +171,8 @@ class AuthRepositoryImpl implements AuthRepository {
   Future<Either<Failure, RoleModel>> selectRole(String roleId) async {
     if (await networkInfo.isConnected) {
       try {
-        final isVeirfied = await remoteDataSource.selectRlole(roleId);
-        return Right(isVeirfied);
+        final isVerified = await remoteDataSource.selectRole(roleId);
+        return Right(isVerified);
       } on Failure catch (failure) {
         return Left(failure);
       }

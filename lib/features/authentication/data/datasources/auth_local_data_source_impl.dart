@@ -23,8 +23,12 @@ class AuthLocalDataSourceImpl implements AuthLocalDataSource {
 
     // 1) Store sessionId/access token securely
     final sessionId = authResult.sessionId;
+    final userId = authResult.user.id;
     if (sessionId != null && sessionId.isNotEmpty) {
       await storage.setAuthToken(sessionId);
+    }
+    if (userId != null && userId.isNotEmpty) {
+      await storage.setUserId(userId);
     }
 
     // 2) Cache non-sensitive user snapshot in prefs

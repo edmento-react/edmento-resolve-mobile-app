@@ -1,5 +1,8 @@
 import 'dart:async';
 
+import 'package:edmentoresolve/core/di/injection_container.dart';
+import 'package:edmentoresolve/features/shared/data/datasources/people_remote_data_source.dart';
+import 'package:edmentoresolve/features/shared/data/services/users_cache_service.dart';
 import 'package:edmentoresolve/features/shared/domain/entities/person.dart';
 import 'package:edmentoresolve/features/shared/presentation/bloc/compose_email_cubit.dart';
 import 'package:edmentoresolve/features/shared/presentation/bloc/compose_email_state.dart';
@@ -94,6 +97,9 @@ Best regards,
     _subjectController = TextEditingController(text: initialSubject);
     _bodyController = TextEditingController(text: initialBody);
 
+    // Load users for search functionality
+    _loadUsersForSearch();
+
     // Initialize the cubit with initial values - use microtask for better performance
     scheduleMicrotask(() {
       if (mounted) {
@@ -116,6 +122,35 @@ Best regards,
     _subjectController.dispose();
     _bodyController.dispose();
     super.dispose();
+  }
+
+  /// Load users for search functionality
+  Future<void> _loadUsersForSearch() async {
+    try {
+      final usersCacheService = sl<UsersCacheService>();
+
+      // Check if we already have valid cached data
+      if (usersCacheService.hasValidCache) {
+        print(
+          '📦 ComposeEmailPage: Using cached users (${usersCacheService.cachedUsers!.length} users)',
+        );
+        return;
+      }
+
+      print('🔄 ComposeEmailPage: Loading users for search...');
+
+      // Load users from API and cache them
+      final peopleDataSource = sl<IPeopleRemoteDataSource>();
+      final users = await peopleDataSource.getPeople();
+
+      // Cache the users
+      usersCacheService.cacheUsers(users);
+
+      print('✅ ComposeEmailPage: Loaded and cached ${users.length} users');
+    } catch (e) {
+      print('❌ ComposeEmailPage: Failed to load users: $e');
+      // Don't show error to user as this is background loading
+    }
   }
 
   @override

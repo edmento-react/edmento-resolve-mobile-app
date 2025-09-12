@@ -11,5 +11,5 @@ abstract class AuthRemoteDataSource {
   Future<bool> sendForgotPasswordOtp(String email);
   Future<bool> verifyOtp(String email, String otp);
   Future<bool> newPassword(String email, String newPassword);
-  Future<RoleModel> selectRlole(String roleId);
+  Future<RoleModel> selectRole(String roleId);
 }

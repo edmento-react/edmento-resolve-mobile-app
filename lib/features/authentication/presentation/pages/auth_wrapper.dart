@@ -1,4 +1,5 @@
 import 'package:edmentoresolve/core/constants/app_constants.dart';
+import 'package:edmentoresolve/features/authentication/domain/entities/auth_result_entity.dart';
 import 'package:edmentoresolve/features/authentication/presentation/bloc/auth_bloc.dart';
 import 'package:edmentoresolve/features/authentication/presentation/bloc/role_cubit.dart';
 import 'package:edmentoresolve/features/authentication/presentation/pages/login_page.dart';
@@ -29,6 +30,25 @@ class AuthWrapper extends StatefulWidget {
 class _AuthWrapperState extends State<AuthWrapper> {
   bool _bootstrapped = false;
 
+  @override
+  void initState() {
+    super.initState();
+    // Check if user is already authenticated when AuthWrapper loads
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      final authState = context.read<AuthBloc>().state;
+      if (authState is AuthSuccess && !_bootstrapped) {
+        _bootstrapRole(authState.authResult);
+      }
+    });
+  }
+
+  Future<void> _bootstrapRole(AuthResult authResult) async {
+    if (_bootstrapped) return;
+    await context.read<RoleResolverCubit>().bootstrap(authResult);
+    _bootstrapped = true;
+    debugPrint('[AuthWrapper] Role bootstrap completed in initState');
+  }
+
   Widget _pageForRole(int roleId) {
     switch (roleId) {
       case UserRoles.principal:
@@ -55,9 +75,7 @@ class _AuthWrapperState extends State<AuthWrapper> {
       listener: (context, state) async {
         if (_bootstrapped) return;
         final auth = (state as AuthSuccess).authResult;
-        await context.read<RoleResolverCubit>().bootstrap(auth);
-        _bootstrapped = true;
-        debugPrint('[AuthWrapper] Role bootstrap completed');
+        await _bootstrapRole(auth);
       },
       builder: (context, authState) {
         // Not authenticated → Login

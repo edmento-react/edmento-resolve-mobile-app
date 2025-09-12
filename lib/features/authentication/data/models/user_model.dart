@@ -65,14 +65,14 @@ class UserModel {
   const UserModel({
     this.id,
     required this.email,
-    @JsonKey(name: 'is_first_user') required this.isFirstUser,
+    required this.isFirstUser,
     this.name,
     this.phone,
     this.positioncategory,
     this.avatar,
     required this.roles,
-    @JsonKey(name: 'created_at') this.createdAt,
-    @JsonKey(name: 'updated_at') this.updatedAt,
+    this.createdAt,
+    this.updatedAt,
     this.loginTime,
   });
 
